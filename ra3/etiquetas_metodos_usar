@@ -1,0 +1,8 @@
+Etiqueta @Test: Es una anotación utilizada en JUnit para indicar que un método público sin parámetros es un método de prueba. 
+Al marcar un método con @Test, le dices al framework que ejecute ese método como una prueba unitaria.
+
+Etiqueta @DisplayName: Anotación en JUnit 5 que se utiliza para definir un nombre personalizado y descriptivo para un método de prueba o una clase de prueba. 
+El nombre se muestra en los informes de prueba en lugar del nombre del método, lo que hace que los resultados de las pruebas sean más legibles.
+
+Método de Prueba assertEquals: Es un método de aserción en JUnit que verifica si dos valores son iguales. 
+Se utiliza para afirmar que el valor esperado es igual al valor real obtenido durante la prueba. Si no lo son, la prueba falla.
