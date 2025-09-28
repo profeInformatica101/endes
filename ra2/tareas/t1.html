@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Práctica: Área de un rectángulo + Evaluación de IDEs</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    :root{
+      --brand: #0d6efd;
+      --bg-soft: #f8fafc;
+    }
+    body{background: var(--bg-soft);}    
+    .glass{backdrop-filter: blur(6px); background: rgba(255,255,255,.75); border: 1px solid rgba(0,0,0,.05)}
+    .shadow-soft{box-shadow: 0 10px 30px rgba(0,0,0,.08)}
+    pre code{white-space: pre-wrap}
+    .check-col{width: 3rem}
+    .badge-soft{background: rgba(13,110,253,.1); color: #0d6efd; border: 1px solid rgba(13,110,253,.25)}
+    .hero-gradient{
+      background: radial-gradient(1000px 400px at 10% -10%, rgba(13,110,253,.25), transparent),
+                  radial-gradient(800px 300px at 90% 10%, rgba(111,66,193,.25), transparent),
+                  linear-gradient(180deg, #ffffff, #eef5ff);
+    }
+    .code-lang{font-size: .825rem}
+  </style>
+</head>
+<body>
+  <!-- HERO -->
+  <header class="hero-gradient border-bottom">
+    <div class="container py-5 py-lg-6">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <h1 class="display-5 fw-bold mb-3">Práctica evaluable: <span class="text-primary">Área de un rectángulo</span></h1>
+          <p class="lead text-secondary">Aplicaremos el ciclo de <strong>análisis → diseño → implementación → pruebas</strong> y evaluaremos distintos <abbr title="Integrated Development Environment">IDE</abbr>s generando ejecutables en varios lenguajes.</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <span class="badge rounded-pill text-bg-primary"><i class="bi bi-rulers"></i> Algoritmia</span>
+            <span class="badge rounded-pill text-bg-success"><i class="bi bi-cpu"></i> Multilenguaje</span>
+            <span class="badge rounded-pill text-bg-dark"><i class="bi bi-terminal"></i> CLI / GUI</span>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="glass shadow-soft rounded-4 p-4">
+            <h2 class="h5 mb-3"><i class="bi bi-clipboard2-check text-primary me-2"></i>Objetivo de la práctica</h2>
+            <p class="mb-2">Desarrollar un programa que solicite <strong>base</strong> y <strong>altura</strong> (valores reales positivos) de un rectángulo y calcule su <strong>área = base × altura</strong>, validando las entradas.</p>
+            <ul class="small text-secondary mb-0">
+              <li>Entrada: base, altura &gt; 0</li>
+              <li>Proceso: validación y cálculo</li>
+              <li>Salida: área del rectángulo</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <!-- Tabs: Problema, Análisis, Diseño, Pseudocódigo -->
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-problema-tab" data-bs-toggle="pill" data-bs-target="#pills-problema" type="button" role="tab" aria-controls="pills-problema" aria-selected="true"><i class="bi bi-question-circle me-1"></i> Problema</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-analisis-tab" data-bs-toggle="pill" data-bs-target="#pills-analisis" type="button" role="tab" aria-controls="pills-analisis" aria-selected="false"><i class="bi bi-search me-1"></i> Análisis</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-diseno-tab" data-bs-toggle="pill" data-bs-target="#pills-diseno" type="button" role="tab" aria-controls="pills-diseno" aria-selected="false"><i class="bi bi-diagram-3 me-1"></i> Diseño</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-pseudo-tab" data-bs-toggle="pill" data-bs-target="#pills-pseudo" type="button" role="tab" aria-controls="pills-pseudo" aria-selected="false"><i class="bi bi-code me-1"></i> Pseudocódigo</button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+      <!-- PROBLEMA -->
+      <div class="tab-pane fade show active" id="pills-problema" role="tabpanel" aria-labelledby="pills-problema-tab" tabindex="0">
+        <div class="card shadow-soft border-0 rounded-4">
+          <div class="card-body p-4 p-lg-5">
+            <h3 class="h4 mb-3">Enunciado</h3>
+            <p>Desarrollar un programa que solicite al usuario las dimensiones de un rectángulo (base y altura) y calcule su área. Los datos deben ser <strong>reales positivos</strong>. El programa validará que la base y la altura sean mayores que cero; en caso contrario, volverá a pedir el dato.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALISIS -->
+      <div class="tab-pane fade" id="pills-analisis" role="tabpanel" aria-labelledby="pills-analisis-tab" tabindex="0">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="card shadow-soft border-0 rounded-4 h-100">
+              <div class="card-body p-4">
+                <h3 class="h5 mb-3"><i class="bi bi-box-arrow-in-down-right text-primary me-2"></i>Entradas</h3>
+                <ul class="mb-0">
+                  <li>Base: número real positivo.</li>
+                  <li>Altura: número real positivo.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card shadow-soft border-0 rounded-4 h-100">
+              <div class="card-body p-4">
+                <h3 class="h5 mb-3"><i class="bi bi-box-arrow-up-right text-success me-2"></i>Salidas</h3>
+                <p class="mb-0">Área del rectángulo (real positivo).</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="card shadow-soft border-0 rounded-4">
+              <div class="card-body p-4">
+                <h3 class="h5 mb-3"><i class="bi bi-repeat text-dark me-2"></i>Proceso</h3>
+                <ol class="mb-0">
+                  <li>Solicitar base y validar &gt; 0.</li>
+                  <li>Solicitar altura y validar &gt; 0.</li>
+                  <li>Calcular <code>área = base × altura</code>.</li>
+                  <li>Mostrar el resultado.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISEÑO -->
+      <div class="tab-pane fade" id="pills-diseno" role="tabpanel" aria-labelledby="pills-diseno-tab" tabindex="0">
+        <div class="card shadow-soft border-0 rounded-4">
+          <div class="card-body p-4 p-lg-5">
+            <h3 class="h4 mb-3">Especificación del proceso con validación</h3>
+<pre class="bg-light p-3 rounded-3 border"><code>1) Pedir base. Si base ≤ 0, volver a pedirla.
+2) Pedir altura. Si altura ≤ 0, volver a pedirla.
+3) área ← base × altura
+4) Mostrar área</code></pre>
+            <p class="mb-0 text-secondary small">Sugerencia didáctica: dibujar un diagrama de flujo o N/S con un bucle <em>mientras</em> por cada validación.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PSEUDOCÓDIGO -->
+      <div class="tab-pane fade" id="pills-pseudo" role="tabpanel" aria-labelledby="pills-pseudo-tab" tabindex="0">
+        <div class="card shadow-soft border-0 rounded-4">
+          <div class="card-body p-4 p-lg-5">
+            <h3 class="h4 mb-3">Pseudocódigo estructurado</h3>
+<pre class="bg-dark text-white p-3 rounded-3"><code>Inicio
+  Escribir "Introduce la base del rectángulo:"
+  Leer base
+  Mientras base &lt;= 0 Hacer
+    Escribir "Por favor, introduce un número positivo para la base"
+    Leer base
+  FinMientras
+
+  Escribir "Introduce la altura del rectángulo:"
+  Leer altura
+  Mientras altura &lt;= 0 Hacer
+    Escribir "Por favor, introduce un número positivo para la altura"
+    Leer altura
+  FinMientras
+
+  area ← base × altura
+  Escribir "El área del rectángulo es:", area
+Fin</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implementaciones de referencia -->
+    <section class="mt-5">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="h4 mb-0"><i class="bi bi-braces-asterisk text-primary me-2"></i>Implementaciones de referencia</h2>
+        <span class="badge badge-soft rounded-pill">Guárdalas como base de pruebas</span>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 shadow-soft rounded-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="h6 mb-0">Python</h3>
+                <span class="code-lang">.py</span>
+              </div>
+<pre class="bg-light p-3 rounded-3 border"><code>def pedir_positivo(texto):
+    while True:
+        try:
+            x = float(input(texto))
+            if x &gt; 0:
+                return x
+            print("Debe ser un número positivo.")
+        except ValueError:
+            print("Entrada no válida.")
+
+base = pedir_positivo("Base: ")
+altura = pedir_positivo("Altura: ")
+area = base * altura
+print(f"Área = {area}")</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 shadow-soft rounded-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="h6 mb-0">Java (CLI)</h3>
+                <span class="code-lang">.java</span>
+              </div>
+<pre class="bg-light p-3 rounded-3 border"><code>import java.util.*;
+public class Rectangulo {
+  static double pedirPositivo(Scanner sc, String etiqueta){
+    double v;
+    do{ System.out.print(etiqueta); v = sc.nextDouble(); } while(v &lt;= 0);
+    return v;
+  }
+  public static void main(String[] args){
+    Scanner sc = new Scanner(System.in);
+    double base = pedirPositivo(sc, "Base: ");
+    double altura = pedirPositivo(sc, "Altura: ");
+    System.out.println("Área = " + (base*altura));
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 shadow-soft rounded-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="h6 mb-0">C (GCC / Clang)</h3>
+                <span class="code-lang">.c</span>
+              </div>
+<pre class="bg-light p-3 rounded-3 border"><code>#include &lt;stdio.h&gt;
+int main(){
+  double base=0, altura=0;
+  do{ printf("Base: "); scanf("%lf", &base);}while(base &lt;= 0);
+  do{ printf("Altura: "); scanf("%lf", &altura);}while(altura &lt;= 0);
+  printf("Área = %f\n", base*altura);
+  return 0;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 shadow-soft rounded-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="h6 mb-0">JavaScript (Node.js)</h3>
+                <span class="code-lang">.mjs</span>
+              </div>
+<pre class="bg-light p-3 rounded-3 border"><code>import readline from 'node:readline/promises';
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+async function pedirPositivo(msg){
+  while(true){
+    const v = Number(await rl.question(msg));
+    if(!Number.isNaN(v) &amp;&amp; v &gt; 0) return v;
+    console.log('Introduce un número positivo');
+  }
+}
+const base = await pedirPositivo('Base: ');
+const altura = await pedirPositivo('Altura: ');
+console.log('Área =', base*altura);
+rl.close();</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 shadow-soft rounded-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="h6 mb-0">PHP (CLI o web)</h3>
+                <span class="code-lang">.php</span>
+              </div>
+<pre class="bg-light p-3 rounded-3 border"><code>&lt;?php
+function pedirPositivo($msg){
+  do { echo $msg; $v = (float) trim(fgets(STDIN)); } while($v &lt;= 0);
+  return $v;
+}
+$base = pedirPositivo("Base: ");
+$altura = pedirPositivo("Altura: ");
+$area = $base * $altura;
+echo "Área = $area\n";
+</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100 shadow-soft rounded-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="h6 mb-0">JSP (vista simple)</h3>
+                <span class="code-lang">.jsp</span>
+              </div>
+<pre class="bg-light p-3 rounded-3 border"><code>&lt;%@ page contentType="text/html; charset=UTF-8" %&gt;
+&lt;html&gt;&lt;body&gt;
+&lt;form method="post"&gt;
+  Base: &lt;input name="base" type="number" step="any" min="0.000001" required /&gt;&lt;br/&gt;
+  Altura: &lt;input name="altura" type="number" step="any" min="0.000001" required /&gt;&lt;br/&gt;
+  &lt;button&gt;Calcular&lt;/button&gt;
+&lt;/form&gt;
+&lt;%
+  String b = request.getParameter("base");
+  String h = request.getParameter("altura");
+  if(b != null &amp;&amp; h != null){
+    double base = Double.parseDouble(b);
+    double altura = Double.parseDouble(h);
+    if(base &gt; 0 &amp;&amp; altura &gt; 0){
+      out.println("&lt;p&gt;Área = " + (base*altura) + "&lt;/p&gt;");
+    } else {
+      out.println("&lt;p style='color:red'&gt;Valores positivos, por favor.&lt;/p&gt;");
+    }
+  }
+%&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRITERIOS DE EVALUACIÓN -->
+    <section class="mt-5">
+      <h2 class="h4 mb-3"><i class="bi bi-mortarboard text-primary me-2"></i>2. Evalúa entornos integrados de desarrollo</h2>
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="card shadow-soft rounded-4 border-0 h-100">
+            <div class="card-body p-4">
+              <h3 class="h6 text-uppercase text-secondary">Criterios de evaluación</h3>
+              <ol class="mt-3">
+                <li>Instala IDEs propietarios y libres.</li>
+                <li>Añade y elimina módulos/extensiones.</li>
+                <li>Personaliza y automatiza el entorno (plantillas, snippets, tareas).</li>
+                <li>Configura el sistema de actualización.</li>
+                <li>Genera ejecutables a partir de código de distintos lenguajes en un mismo IDE.</li>
+                <li>Genera ejecutables del mismo código en varios IDEs.</li>
+                <li>Identifica características comunes y específicas de cada IDE.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card shadow-soft rounded-4 border-0 h-100">
+            <div class="card-body p-4">
+              <h3 class="h6 text-uppercase text-secondary">Rúbrica (orientativa)</h3>
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead><tr><th>Indicador</th><th class="text-center">0</th><th class="text-center">1</th><th class="text-center">2</th></tr></thead>
+                  <tbody>
+                    <tr><td>Instalación IDEs</td><td class="text-center">—</td><td class="text-center">1 IDE</td><td class="text-center">≥2 IDEs</td></tr>
+                    <tr><td>Módulos/extensiones</td><td class="text-center">—</td><td class="text-center">Añade</td><td class="text-center">Añade y elimina</td></tr>
+                    <tr><td>Automatización</td><td class="text-center">—</td><td class="text-center">Plantillas</td><td class="text-center">Plantillas + tareas</td></tr>
+                    <tr><td>Actualizaciones</td><td class="text-center">—</td><td class="text-center">Manual</td><td class="text-center">Automático</td></tr>
+                    <tr><td>Ejecutables multilenguaje</td><td class="text-center">—</td><td class="text-center">1 lenguaje</td><td class="text-center">≥2 lenguajes</td></tr>
+                    <tr><td>Ejecutables multi-IDE</td><td class="text-center">—</td><td class="text-center">1 IDE</td><td class="text-center">≥2 IDEs</td></tr>
+                    <tr><td>Análisis comparativo</td><td class="text-center">—</td><td class="text-center">Básico</td><td class="text-center">Profundo</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAREAS A REALIZAR -->
+    <section class="mt-5">
+      <h2 class="h4 mb-3"><i class="bi bi-list-check text-primary me-2"></i>Tareas a realizar</h2>
+      <div class="card shadow-soft rounded-4 border-0">
+        <div class="card-body p-4">
+          <ol class="mb-0">
+            <li class="mb-3">
+              <strong>Instala y documenta brevemente</strong> (capturas + versión):
+              <ul>
+                <li>VS Code (libre), IntelliJ IDEA Community / Eclipse / NetBeans (libres), y uno propietario a elegir (p.ej., IntelliJ Ultimate, PyCharm Pro, WebStorm).</li>
+              </ul>
+            </li>
+            <li class="mb-3">
+              <strong>Implementa el ejercicio en 4 lenguajes</strong> (elige entre Python, Java, C, C#, JavaScript/Node, PHP, JSP). Usa validación positiva y muestra el resultado. Guarda el código en carpetas: <code>src/&lt;lenguaje&gt;/</code>.</li>
+            <li class="mb-3">
+              <strong>Genera ejecutables/artefactos</strong> por IDE:
+              <ul>
+                <li>Java: JAR con <code>main</code> definido (Maven/Gradle opcional).</li>
+                <li>C/C++: binario usando el compilador del IDE.</li>
+                <li>Python/Node/PHP: ejecutable empaquetado (p.ej., PyInstaller, pkg para Node, Phar en PHP) o script con <code>run</code> task.</li>
+              </ul>
+            </li>
+            <li class="mb-3"><strong>Añade/Elimina módulos</strong> (plugins/extensiones) útiles para cada IDE e indica su función (formateo, depuración, Git, lanzadores, snippets).</li>
+            <li class="mb-3"><strong>Personaliza y automatiza</strong>: crea una plantilla de archivo con cabecera, un snippet para entrada-validación y una tarea de ejecución/compilación.</li>
+            <li class="mb-3"><strong>Configura actualizaciones</strong>: deja habilitada la búsqueda automática o programada y anota dónde se configura.</li>
+            <li class="mb-3"><strong>Prueba cruzada</strong>: genera el ejecutable del mismo código en al menos 2 IDEs distintos y comprueba resultados.</li>
+            <li class="mb-3"><strong>Informe comparativo</strong> (1–2 páginas): tabla con características comunes/específicas, valoración personal y capturas clave.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Matriz IDE × Lenguaje -->
+      <div class="card shadow-soft rounded-4 border-0 mt-4">
+        <div class="card-body p-4">
+          <h3 class="h6 mb-3">Matriz de pruebas (marca lo que completes)</h3>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Lenguaje</th>
+                  <th class="text-center">VS Code</th>
+                  <th class="text-center">IntelliJ IDEA</th>
+                  <th class="text-center">Eclipse</th>
+                  <th class="text-center">NetBeans</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Python</td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><span class="text-muted small">—</span></td>
+                  <td class="text-center"><span class="text-muted small">—</span></td>
+                </tr>
+                <tr>
+                  <td>Java</td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>C / C++</td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><span class="text-muted small">Plugin</span></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><span class="text-muted small">—</span></td>
+                </tr>
+                <tr>
+                  <td>JavaScript (Node)</td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><span class="text-muted small">—</span></td>
+                  <td class="text-center"><span class="text-muted small">—</span></td>
+                </tr>
+                <tr>
+                  <td>PHP / JSP</td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                  <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-secondary small mb-0"><strong>Consejo:</strong> usa control de versiones (Git/GitHub) y etiqueta tus pruebas con tags <code>vscode</code>, <code>idea</code>, <code>eclipse</code>, <code>netbeans</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 text-center text-secondary">
+      <div class="small">© 2025 — Práctica de Entornos de Desarrollo · Bootstrap 5</div>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
