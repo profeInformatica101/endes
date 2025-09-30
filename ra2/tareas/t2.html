@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAW1 · Práctica 2 · Eclipse + Wild Web Developer</title>
+  <meta name="description" content="Práctica 2 de Entornos de Desarrollo (DAW1): instalación de Eclipse para desarrolladores web, configuración de Wild Web Developer o Web Developer Tools y trabajo con un repositorio GitHub." />
+  <style>
+    :root{
+      --bg:#0b0c10; --card:#161b22; --text:#f0f6fc; --muted:#c9d1d9;
+      --brand:#58a6ff; --accent:#3fb950; --warn:#d29922; --danger:#f85149; 
+      --border:#30363d; --link:#58a6ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .wrap{max-width:1000px; margin-inline:auto; padding:24px;}
+    header{position:sticky; top:0; backdrop-filter:saturate(180%) blur(8px); background:rgba(11,12,16,.9); border-bottom:1px solid var(--border); z-index:5}
+    header .inner{display:flex; gap:16px; align-items:center; justify-content:space-between; padding:12px 24px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand .logo{width:36px; height:36px; border-radius:9px; background:conic-gradient(from 90deg, var(--brand), #7c3aed, #22c55e); box-shadow:0 0 0 3px rgba(76,201,240,.15)}
+    h1{font-size: clamp(1.2rem, 2.2vw + .8rem, 1.8rem); margin:0}
+    nav{display:flex; flex-wrap:wrap; gap:8px}
+    nav a{color:var(--text); text-decoration:none; font-size:.95rem; padding:8px 12px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,.05)}
+    nav a:hover{border-color:var(--brand)}
+
+    .card{background:var(--card); border:1px solid var(--border); border-radius:18px; padding:18px; box-shadow:0 4px 20px rgba(0,0,0,.4);}
+    .grid{display:grid; gap:16px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:900px){.grid.two,.grid.three{grid-template-columns:1fr}}
+
+    h2{margin:.2rem 0 0.8rem; font-size:1.2rem}
+    h3{margin:1rem 0 .5rem; font-size:1.05rem}
+    p,li{color:var(--muted); line-height:1.6}
+    code, pre{background:#0d1117; border:1px solid var(--border); border-radius:10px; color:var(--text);}
+    code{padding:.15rem .4rem}
+    pre{padding:12px; overflow:auto}
+
+    .badge{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:999px; padding:6px 10px; font-size:.85rem; background:rgba(255,255,255,.05)}
+    .ok{color:var(--accent)} .warn{color:var(--warn)} .danger{color:var(--danger)} .brandc{color:var(--brand)}
+
+    .toolbar{display:flex; gap:8px; flex-wrap:wrap}
+    .btn{cursor:pointer; border:1px solid var(--border); background:rgba(255,255,255,.08); color:var(--text); padding:10px 14px; border-radius:12px; font-weight:600}
+    .btn:hover{border-color:var(--brand)}
+
+    details{border:1px dashed var(--border); border-radius:14px; padding:10px 12px; background:rgba(255,255,255,.05)}
+    details summary{cursor:pointer; font-weight:700; margin-bottom:6px}
+
+    .steps{counter-reset: step}
+    .step{position:relative; padding-left:56px; margin:16px 0}
+    .step::before{counter-increment: step; content: counter(step); position:absolute; left:0; top:0; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; font-weight:800; background:linear-gradient(135deg, var(--brand), #7c3aed); color:#fff;}
+
+    .checklist label{display:flex; gap:12px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:12px; margin:8px 0; background:rgba(255,255,255,.05)}
+    .checklist input{transform:scale(1.2); margin-top:3px}
+    .progress{height:10px; width:100%; background:#0d1117; border:1px solid var(--border); border-radius:999px; overflow:hidden}
+    .progress>i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--brand)); transition:width .3s ease}
+
+    table{width:100%; border-collapse:collapse}
+    th,td{border:1px solid var(--border); padding:10px; text-align:left}
+    th{background:rgba(255,255,255,.08)}
+
+    .hint{font-size:.9rem; color:var(--muted)}
+    .repo{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--border); border-radius:10px}
+
+    footer{margin:32px 0 16px; text-align:center; color:var(--muted)}
+
+    @media print{
+      header, .toolbar, nav{display:none !important}
+      body{background:#fff; color:#000}
+      .card{border-color:#ccc; box-shadow:none}
+      code, pre{background:#f7f7f7; border-color:#ddd; color:#111}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>DAW1 · Entornos de Desarrollo — <strong>Práctica 2</strong></h1>
+      </div>
+      <nav aria-label="Secciones de la práctica">
+        <a href="#objetivo">Objetivo</a>
+        <a href="#requisitos">Requisitos</a>
+        <a href="#pasos">Pasos</a>
+        <a href="#github">GitHub</a>
+        <a href="#entrega">Entrega</a>
+        <a href="#rubrica">Rúbrica</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap grid" style="margin-top:16px">
+
+    <section id="objetivo" class="card">
+      <div class="toolbar" style="justify-content:space-between; align-items:center">
+        <span class="badge brandc">DAW1 · Entornos de Desarrollo</span>
+        <div class="toolbar">
+          <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        </div>
+      </div>
+      <h2>🎯 Objetivo</h2>
+      <p>Instalar <strong>Eclipse IDE for Web Developers</strong> y configurar el plugin <strong>Wild Web Developer</strong> (o como alternativa <strong>Web Developer Tools</strong>) para trabajar con <strong>HTML</strong>, <strong>CSS</strong> y <strong>JavaScript</strong>. Finalmente, aplicarás lo aprendido realizando cambios sobre un proyecto web estático en GitHub y publicándolo con GitHub Pages.</p>
+      <div class="grid three">
+        <div class="card">
+          <h3>Competencias</h3>
+          <ul>
+            <li>Instalación y configuración de un IDE profesional.</li>
+            <li>Gestión de plugins y extensiones en Eclipse.</li>
+            <li>Uso básico de Git en un entorno de desarrollo.</li>
+            <li>Edición de HTML/CSS/JS con asistencia del IDE.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Resultados de aprendizaje</h3>
+          <ul>
+            <li>Configura entornos de desarrollo según requisitos del proyecto.</li>
+            <li>Integra herramientas para productividad (validación, autocompletado, linting).</li>
+            <li>Versiona cambios y publica en GitHub / GitHub Pages.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Tiempo estimado</h3>
+          <p>Entre 60 y 90 minutos.</p>
+          <p class="hint">Puede variar según conexión y descargas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="requisitos" class="card">
+      <h2>✅ Requisitos previos</h2>
+      <ul>
+        <li>SO: Windows, Linux o macOS.</li>
+        <li>Permisos para instalar software.</li>
+        <li>Cuenta en GitHub activa.</li>
+        <li>Git instalado y configurado (usuario y email).</li>
+      </ul>
+      <details>
+        <summary>Comandos rápidos de Git</summary>
+        <pre><code>git config --global user.name "Nombre Apellidos"
+git config --global user.email tu-email@ejemplo.com
+
+# Clonar tu fork
+git clone https://github.com/&lt;tu_usuario&gt;/mi-web-estatica
+cd mi-web-estatica
+
+# Comprobar estado y subir cambios
+git status
+git add .
+git commit -m "feat: cambios practicados con Wild Web Developer"
+git push origin main
+</code></pre>
+      </details>
+    </section>
+
+    <section id="pasos" class="card">
+      <h2>🛠️ Pasos a seguir</h2>
+      <ol class="steps">
+        <li class="step">
+          <h3>Descargar e instalar Eclipse</h3>
+          <p>Accede a <a class="repo" href="https://www.eclipse.org/downloads/" target="_blank" rel="noopener">https://www.eclipse.org/downloads/</a>, elige <strong>Eclipse IDE for Web Developers</strong> e instala. Abre Eclipse y verifica que inicia correctamente.</p>
+          <details>
+            <summary>Consejos de instalación</summary>
+            <ul>
+              <li>En Windows: ejecuta el instalador como administrador si tienes errores de permisos.</li>
+              <li>En Linux: descomprime el paquete tar.gz y ejecuta <code>eclipse</code>.</li>
+              <li>En macOS: arrastra Eclipse a <em>Aplicaciones</em> y permite su apertura en Preferencias del Sistema si aparece un aviso de seguridad.</li>
+            </ul>
+          </details>
+        </li>
+
+        <li class="step">
+          <h3>Instalar el plugin Wild Web Developer</h3>
+          <p>En Eclipse, abre <strong>Help → Eclipse Marketplace…</strong>, busca <em>Wild Web Developer</em>, instala y reinicia si se solicita.</p>
+  <img src="img/WildWebDeveloper.png" alt="imagen de plugin web developer" style="width:30%;">
+        </li>
+
+        <li class="step">
+          <h3>Alternativa: instalar Web Developer Tools (WTP)</h3>
+          <p>Si Wild Web Developer no funciona en tu equipo, puedes instalar <em>Web Developer Tools</em>, que también ofrece soporte básico para HTML, CSS y JS.</p>
+          <ul>
+            <li>En Eclipse: <em>Help → Eclipse Marketplace…</em>.</li>
+            <li>Busca <strong>Web Developer Tools</strong> y haz clic en <em>Install</em>.</li>
+            <li>Reinicia Eclipse y verifica en <em>Help → About Eclipse IDE → Installation Details</em>.</li>
+          </ul>
+          <p class="hint">Se recomienda Wild Web Developer, por ser más moderno y con mejor autocompletado. WTP queda como alternativa.</p>
+        </li>
+
+        <li class="step">
+          <h3>Comprobar instalación en Eclipse</h3>
+          <p>Ve a <strong>Help → About Eclipse IDE → Installation Details</strong>. En la pestaña <em>Installed Software</em> verifica que aparecen <strong>Wild Web Developer</strong> (o <strong>Web Developer Tools</strong>). Toma una captura para la entrega.</p>
+            
+        </li>
+
+        <li class="step" id="github">
+          <h3>Trabajar con el repositorio en GitHub</h3>
+          <ol>
+            <li>Realiza un <strong>fork</strong> de <a class="repo" href="https://github.com/profeInformatica101/mi-web-estatica" target="_blank" rel="noopener">profeInformatica101/mi-web-estatica</a> en tu cuenta.</li>
+            <li>Clona tu fork localmente.</li>
+            <li><strong>Abrir el proyecto en Eclipse</strong>:
+              <ul>
+                <li>Usa <kbd>File</kbd> → <kbd>Open Projects from File System…</kbd> y selecciona la carpeta del repositorio clonado (<code>mi-web-estatica</code>).</li>
+                <li>Si no lo detecta como proyecto, marca la opción <em>New Project</em> para crearlo y que incluya los archivos HTML/CSS/JS.</li>
+              </ul>
+            </li>
+            <li>Realiza <strong>al menos 3 cambios</strong> usando el editor (Wild Web Developer / WTP):
+              <ul>
+                <li>HTML: modifica encabezados o añade una sección con semántica correcta.</li>
+                <li>CSS: añade una regla (por ejemplo, una clase utilitaria o un cambio de color).</li>
+                <li>JS: escribe una función simple (p.ej., mostrar un mensaje en consola o manipular el DOM).</li>
+              </ul>
+                      <details>
+            <summary>Verifica que funciona</summary>
+            <ul>
+              <li>Crea o abre un archivo <code>.html</code>, <code>.css</code> o <code>.js</code>.</li>
+              <li>Comprueba que hay <em>autocompletado</em>, validación y sugerencias (usa <kbd>Ctrl</kbd>+<kbd>Espacio</kbd>).</li>
+            </ul>
+          </details>
+            </li>
+            
+            <li>Confirma y <em>sube</em> tus cambios a tu fork.</li>
+            <li><strong>Publicar tu web con GitHub Pages</strong>:
+              <ol>
+                <li>En tu repositorio en GitHub, ve a <em>Settings → Pages</em>.</li>
+                <li>En <em>Build and deployment</em>, selecciona <strong>Source: Deploy from a branch</strong>.</li>
+                <li>Elige <strong>Branch: main</strong> y carpeta <strong>/ (root)</strong>; guarda.</li>
+                <li>Asegúrate de que existe <code>index.html</code> en la raíz del repo.</li>
+                <li>Espera a que aparezca el aviso de <em>Deployment succeeded</em> (puede tardar 1–3 min).</li>
+                <li>La URL será: <code>https://&lt;tu-usuario&gt;.github.io/mi-web-estatica</code>. Ábrela y comprueba que se ven tus cambios.</li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+
+      <div class="card">
+        <h3>Checklist de progreso</h3>
+        <div class="checklist" id="checklist">
+          <label><input type="checkbox"/> Eclipse instalado y abierto sin errores</label>
+          <label><input type="checkbox"/> Wild Web Developer / WTP instalado y verificado</label>
+          <label><input type="checkbox"/> Fork creado en mi cuenta de GitHub</label>
+          <label><input type="checkbox"/> Repositorio clonado y abierto en Eclipse</label>
+          <label><input type="checkbox"/> Cambios realizados en HTML</label>
+          <label><input type="checkbox"/> Cambios realizados en CSS</label>
+          <label><input type="checkbox"/> Cambios confirmados y subidos (push)</label>
+          <label><input type="checkbox"/> Web publicada en GitHub Pages</label>
+          <div class="progress" aria-label="Avance de la práctica"><i id="bar"></i></div>
+          <p class="hint" id="progressHint">0% completado</p>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="entrega" class="card">
+      <h2>📤 Entrega (Moodle)</h2>
+      <ol>
+        <li>Sube un <strong>documento PDF</strong> con:
+          <ul>
+            <li>Capturas de cada paso de instalación y configuración.</li>
+            <li>Captura de <strong>Help → About Eclipse IDE → Installation Details</strong> mostrando Wild Web Developer o WTP instalado.</li>
+            <li>Evidencia del fork, clonación y subida de cambios (capturas de commits y vista del repo en GitHub).</li>
+            <li><strong>Enlace público</strong> a tu web publicada: <code>https://&lt;tu-usuario&gt;.github.io/mi-web-estatica</code>.</li>
+            <li>Captura de pantalla de la web ya publicada con tus cambios visibles.</li>
+          </ul>
+        </li>
+        <li>Incluye una <strong>reflexión breve</strong> (5-8 líneas): dificultades, cómo las solucionaste y qué aprendiste.</li>
+      </ol>
+      <details>
+        <summary>Plantilla mínima sugerida</summary>
+        <pre><code># Práctica 2 · Eclipse + Wild Web Developer
+
+## 1. Instalación de Eclipse
+(Capturas + notas)
+
+## 2. Instalación y verificación de Wild Web Developer / WTP
+(Capturas + About → Installation Details)
+
+## 3. Trabajo con GitHub y publicación
+(Fork + clone + cambios + commits + enlace público y captura)
+
+## 4. Reflexión
+(5-8 líneas)
+</code></pre>
+      </details>
+    </section>
+
+    <section id="rubrica" class="card">
+      <h2>📏 Rúbrica de evaluación (10 puntos)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Descripción</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Instalación de Eclipse</td>
+            <td>IDE instalado correctamente y evidencias claras</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Plugins (Wild Web Developer / WTP)</td>
+            <td>Instalación verificada y funcionamiento básico (autocompletado)</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Trabajo en HTML/CSS/JS</td>
+            <td>Se realizan cambios significativos en los tres frentes</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Uso de Git/GitHub</td>
+            <td>Fork, clonación, commits descriptivos y push al repo</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Reflexión</td>
+            <td>Análisis personal conciso y útil</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hint">Puntos extra (≤ +0,5): buenas prácticas (commits atómicos, estructura semántica en HTML, comentarios claros en CSS/JS).</p>
+    </section>
+
+    <section id="faq" class="card">
+      <h2>❓ FAQ / Ayuda rápida</h2>
+      <details>
+        <summary>El Marketplace no abre / no aparece el plugin</summary>
+        <p>Comprueba la conexión a Internet, desactiva proxies si aplican y reinicia Eclipse. Alternativa: <em>Install New Software…</em> con update sites oficiales.</p>
+      </details>
+      <details>
+        <summary>No puedo hacer push a mi repositorio</summary>
+        <p>Verifica que has configurado credenciales o tokens de acceso en GitHub y que el <em>remote</em> apunta a tu fork.</p>
+      </details>
+      <details>
+        <summary>El autocompletado no funciona</summary>
+        <p>Asegúrate de que el archivo tiene extensión correcta y que el editor por defecto es <em>Generic Editor</em> (Wild Web Developer) o el de WTP. Revisa <em>Preferences → General → Editors → File Associations</em> y que <kbd>Ctrl</kbd>+<kbd>Espacio</kbd> esté activo en <em>General → Keys</em>.</p>
+      </details>
+      <details>
+        <summary>GitHub Pages no muestra mi web</summary>
+        <ul>
+          <li>En <em>Settings → Pages</em> usa <strong>Deploy from a branch</strong>, <strong>main</strong> y <strong>/ (root)</strong>.</li>
+          <li>Verifica que existe <code>index.html</code> en la raíz y que el despliegue dice <em>succeeded</em>.</li>
+          <li>Espera 1–3 minutos y recarga la URL <code>https://&lt;tu-usuario&gt;.github.io/mi-web-estatica</code> (prueba incógnito).</li>
+        </ul>
+      </details>
+    </section>
+
+  </main>
+
+  <footer class="wrap">
+    <p>© Entornos de Desarrollo · DAW1 — Práctica 2. Hecho con ❤️ para aprender mejor.</p>
+  </footer>
+
+  <script>
+    // Checklist con barra de progreso
+    (function(){
+      const list = document.getElementById('checklist');
+      const bar = document.getElementById('bar');
+      const hint = document.getElementById('progressHint');
+      if(!list) return;
+      const inputs = list.querySelectorAll('input[type="checkbox"]');
+      const update = ()=>{
+        const done = [...inputs].filter(i=>i.checked).length;
+        const pct = Math.round((done/inputs.length)*100);
+        bar.style.width = pct + '%';
+        hint.textContent = pct + '% completado';
+      };
+      inputs.forEach(i=> i.addEventListener('change', update));
+      update();
+    })();
+  </script>
+</body>
+</html>
