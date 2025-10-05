@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAW1 · Práctica 3 · Conectar Eclipse con GitHub (EGit)</title>
+  <meta name="description" content="Práctica 3 de Entornos de Desarrollo (DAW1): conectar Eclipse con GitHub usando EGit. Clonado de repos, configuración de identidad y token, commits, ramas, push/pull, upstream, resolución de conflictos y entrega." />
+  <style>
+    :root{
+      --bg:#0b0c10; --card:#161b22; --text:#f0f6fc; --muted:#c9d1d9;
+      --brand:#58a6ff; --accent:#3fb950; --warn:#d29922; --danger:#f85149; 
+      --border:#30363d; --link:#58a6ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .wrap{max-width:1000px; margin-inline:auto; padding:24px;}
+    header{position:sticky; top:0; backdrop-filter:saturate(180%) blur(8px); background:rgba(11,12,16,.9); border-bottom:1px solid var(--border); z-index:5}
+    header .inner{display:flex; gap:16px; align-items:center; justify-content:space-between; padding:12px 24px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand .logo{width:36px; height:36px; border-radius:9px; background:conic-gradient(from 90deg, var(--brand), #7c3aed, #22c55e); box-shadow:0 0 0 3px rgba(76,201,240,.15)}
+    h1{font-size: clamp(1.2rem, 2.2vw + .8rem, 1.8rem); margin:0}
+    nav{display:flex; flex-wrap:wrap; gap:8px}
+    nav a{color:var(--text); text-decoration:none; font-size:.95rem; padding:8px 12px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,.05)}
+    nav a:hover{border-color:var(--brand)}
+
+    .card{background:var(--card); border:1px solid var(--border); border-radius:18px; padding:18px; box-shadow:0 4px 20px rgba(0,0,0,.4);}
+    .grid{display:grid; gap:16px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:900px){.grid.two,.grid.three{grid-template-columns:1fr}}
+
+    h2{margin:.2rem 0 0.8rem; font-size:1.2rem}
+    h3{margin:1rem 0 .5rem; font-size:1.05rem}
+    p,li{color:var(--muted); line-height:1.6}
+    code, pre{background:#0d1117; border:1px solid var(--border); border-radius:10px; color:var(--text);}
+    code{padding:.15rem .4rem}
+    pre{padding:12px; overflow:auto}
+
+    .badge{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:999px; padding:6px 10px; font-size:.85rem; background:rgba(255,255,255,.05)}
+    .ok{color:var(--accent)} .warn{color:var(--warn)} .danger{color:var(--danger)} .brandc{color:var(--brand)}
+
+    .toolbar{display:flex; gap:8px; flex-wrap:wrap}
+    .btn{cursor:pointer; border:1px solid var(--border); background:rgba(255,255,255,.08); color:var(--text); padding:10px 14px; border-radius:12px; font-weight:600}
+    .btn:hover{border-color:var(--brand)}
+
+    details{border:1px dashed var(--border); border-radius:14px; padding:10px 12px; background:rgba(255,255,255,.05)}
+    details summary{cursor:pointer; font-weight:700; margin-bottom:6px}
+
+    .steps{counter-reset: step}
+    .step{position:relative; padding-left:56px; margin:16px 0}
+    .step::before{counter-increment: step; content: counter(step); position:absolute; left:0; top:0; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; font-weight:800; background:linear-gradient(135deg, var(--brand), #7c3aed); color:#fff;}
+
+    .checklist label{display:flex; gap:12px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:12px; margin:8px 0; background:rgba(255,255,255,.05)}
+    .checklist input{transform:scale(1.2); margin-top:3px}
+    .progress{height:10px; width:100%; background:#0d1117; border:1px solid var(--border); border-radius:999px; overflow:hidden}
+    .progress>i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--brand)); transition:width .3s ease}
+
+    table{width:100%; border-collapse:collapse}
+    th,td{border:1px solid var(--border); padding:10px; text-align:left}
+    th{background:rgba(255,255,255,.08)}
+
+    .hint{font-size:.9rem; color:var(--muted)}
+    .repo{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--border); border-radius:10px}
+
+    footer{margin:32px 0 16px; text-align:center; color:var(--muted)}
+
+    @media print{
+      header, .toolbar, nav{display:none !important}
+      body{background:#fff; color:#000}
+      .card{border-color:#ccc; box-shadow:none}
+      code, pre{background:#f7f7f7; border-color:#ddd; color:#111}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>DAW1 · Entornos de Desarrollo — <strong>Práctica 3</strong></h1>
+      </div>
+      <nav aria-label="Secciones de la práctica">
+        <a href="#objetivo">Objetivo</a>
+        <a href="#requisitos">Requisitos</a>
+        <a href="#pasos">Pasos</a>
+        <a href="#flujo">Flujo de trabajo</a>
+        <a href="#upstream">Upstream</a>
+        <a href="#terminal">Plan B (Terminal)</a>
+        <a href="#entrega">Entrega</a>
+        <a href="#rubrica">Rúbrica</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap grid" style="margin-top:16px">
+
+    <section id="objetivo" class="card">
+      <div class="toolbar" style="justify-content:space-between; align-items:center">
+        <span class="badge brandc">DAW1 · Entornos de Desarrollo</span>
+        <div class="toolbar">
+          <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        </div>
+      </div>
+      <h2>🎯 Objetivo</h2>
+      <p>Conectar <strong>Eclipse</strong> con <strong>GitHub</strong> usando <strong>EGit</strong> (el cliente Git integrado), clonar tu fork, configurar tu identidad y credenciales, realizar cambios y sincronizarlos (commit, push, pull), trabajar con ramas y enlazar tu fork con el repositorio original (<em>upstream</em>).</p>
+      <div class="grid three">
+        <div class="card">
+          <h3>Competencias</h3>
+          <ul>
+            <li>Configuración de identidad y credenciales Git en Eclipse.</li>
+            <li>Clonado, commits, push/pull y resolución de conflictos.</li>
+            <li>Gestión de ramas y remotos (origin / upstream).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Resultados de aprendizaje</h3>
+          <ul>
+            <li>Integra y usa control de versiones en el IDE.</li>
+            <li>Aplica flujo de trabajo con repositorios forkeados.</li>
+            <li>Publica cambios en GitHub con buenas prácticas.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Tiempo estimado</h3>
+          <p>Entre 60 y 90 minutos.</p>
+          <p class="hint">Depende de descargas y autenticación.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="requisitos" class="card">
+      <h2>✅ Requisitos previos</h2>
+      <ul>
+        <li>Eclipse instalado (con EGit: viene de serie).</li>
+        <li>Cuenta GitHub activa y acceso a <code>https://github.com</code>.</li>
+        <li>Fork creado de <a class="repo" href="https://github.com/profeInformatica101/mi-web-estatica" target="_blank" rel="noopener">profeInformatica101/mi-web-estatica</a> en tu cuenta.</li>
+        <li><strong>Token de acceso personal (PAT)</strong> de GitHub para HTTPS.</li>
+      </ul>
+      <details>
+        <summary>Crear tu token de GitHub (recomendado: fine-grained)</summary>
+        <ol>
+          <li>GitHub → tu avatar → <em>Settings</em> → <em>Developer settings</em> → <em>Personal access tokens</em>.</li>
+          <li>Crea un token <em>fine-grained</em> (o clásico con alcance <code>repo</code> si hace falta).</li>
+          <li>Restringe a tu repositorio forkeado si usas fine-grained. Guarda el token en lugar seguro.</li>
+          <li>En Eclipse lo usarás como “contraseña” cuando te lo pida EGit.</li>
+        </ol>
+        <p class="hint">En entornos con cortafuegos, HTTPS (puerto 443) suele funcionar mejor que SSH.</p>
+      </details>
+    </section>
+
+    <section id="pasos" class="card">
+      <h2>🛠️ Pasos guiados (EGit en Eclipse)</h2>
+      <ol class="steps">
+        <li class="step">
+          <h3>Configura tu identidad Git en Eclipse</h3>
+          <ul>
+            <li><em>Window → Preferences → Team → Git → Configuration</em>.</li>
+            <li><strong>Add Entry…</strong>:
+              <ul>
+                <li><code>user.name</code> = <em>Tu Nombre Apellidos</em></li>
+                <li><code>user.email</code> = <em>tu-correo@ejemplo.com</em></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="step">
+          <h3>Clona tu fork desde GitHub</h3>
+          <ul>
+            <li><em>File → Import… → Git → Projects from Git (with URI) → Next</em>.</li>
+            <li>Pega la URL HTTPS de tu fork: <code>https://github.com/&lt;tu_usuario&gt;/mi-web-estatica.git</code>.</li>
+            <li>Autenticación: usuario = tu usuario GitHub; contraseña = <strong>tu token</strong>.</li>
+            <li>Elige la rama <code>main</code> y el directorio destino. <em>Finish</em>.</li>
+            <li>Importa el proyecto: <em>Import as general project</em> o <em>Existing Eclipse project</em> si lo detecta.</li>
+          </ul>
+        </li>
+
+        <li class="step">
+          <h3>Abre la perspectiva Git (opcional pero útil)</h3>
+          <ul>
+            <li><em>Window → Perspective → Open Perspective → Other… → Git</em>.</li>
+            <li>Verás repos, ramas, historial y staging.</li>
+          </ul>
+        </li>
+
+        <li class="step">
+          <h3>Realiza cambios en el código</h3>
+          <ul>
+            <li>Edita <code>index.html</code>, <code>styles.css</code> o <code>script.js</code>.</li>
+            <li>Guarda y revisa los cambios en la vista <em>Git Staging</em>.</li>
+          </ul>
+        </li>
+
+        <li class="step">
+          <h3>Prepara (stage) y confirma (commit) tus cambios</h3>
+          <ul>
+            <li>Vista <strong>Git Staging</strong>:
+              <ul>
+                <li>Mueve archivos de <em>Unstaged Changes</em> a <em>Staged Changes</em>.</li>
+                <li>Escribe un mensaje de commit claro:
+                  <pre><code>feat: añade sección "Equipo" y estilos del footer</code></pre>
+                </li>
+                <li><strong>Commit</strong> o <strong>Commit and Push</strong>.</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="step">
+          <h3>Sube (push) tus commits a GitHub</h3>
+          <ul>
+            <li>Si hiciste <em>Commit</em> a secas: botón derecho sobre el proyecto → <em>Team → Push Branch 'main'</em>.</li>
+            <li>Confirma <code>origin</code> y la rama remota <code>main</code>. Acepta.</li>
+          </ul>
+        </li>
+
+        <li class="step">
+          <h3>Trae cambios (pull) y sincroniza</h3>
+          <ul>
+            <li>Botón derecho proyecto → <em>Team → Pull</em> para integrar cambios del remoto.</li>
+            <li>Si hay conflictos, Eclipse te mostrará comparadores para resolverlos.</li>
+          </ul>
+        </li>
+
+        <li class="step">
+          <h3>Crea y usa ramas (feature branch)</h3>
+          <ul>
+            <li>Botón derecho → <em>Team → Switch To → New Branch…</em> → nombre p.ej. <code>feat/cabecera</code>.</li>
+            <li>Trabaja, commit, push. Para publicar la rama: <em>Team → Push Branch 'feat/cabecera'</em>.</li>
+            <li>Cambia entre ramas en <em>Team → Switch To</em>.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="card" id="flujo">
+        <h3>Flujo de trabajo recomendado</h3>
+        <ol>
+          <li>Actualiza <code>main</code> (Pull).</li>
+          <li>Crea rama: <code>feat/…</code> o <code>fix/…</code>.</li>
+          <li>Pequeños commits con mensajes claros.</li>
+          <li>Push de la rama al remoto.</li>
+          <li>Abre Pull Request en GitHub (de tu rama → <code>main</code> de tu fork o a donde indique la tarea).</li>
+        </ol>
+        <p class="hint">Buenos mensajes: <code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>style:</code>, <code>refactor:</code>, <code>chore:</code>.</p>
+      </div>
+    </section>
+
+    <section id="upstream" class="card">
+      <h2>🔀 Conectar “upstream” (sincronizar con el repo del profesor)</h2>
+      <p>Tu <strong>origin</strong> es tu fork. <strong>Upstream</strong> será el repositorio original del profesor. Así podrás traer mejoras del original a tu fork.</p>
+      <ol class="steps">
+        <li class="step">
+          <h3>Añadir remoto upstream</h3>
+          <ul>
+            <li>Vista <em>Git Repositories</em> → despliega tu repo → <em>Remotes</em> → botón derecho → <em>Create Remote…</em>.</li>
+            <li>Nombre: <code>upstream</code> → marca <em>Configure fetch</em>.</li>
+            <li>URL: <code>https://github.com/profeInformatica101/mi-web-estatica.git</code> → <em>Save and Fetch</em>.</li>
+          </ul>
+        </li>
+        <li class="step">
+          <h3>Actualizar tu <code>main</code> con upstream</h3>
+          <ul>
+            <li>Botón derecho proyecto → <em>Team → Fetch from Upstream</em> (elige remoto <code>upstream</code>).</li>
+            <li>Integra: <em>Team → Merge…</em> → selecciona <code>upstream/main</code> → <em>Merge</em>.</li>
+            <li>Sube el resultado a tu fork: <em>Team → Push Branch 'main'</em> (a <code>origin</code>).</li>
+          </ul>
+        </li>
+      </ol>
+      <p class="hint">Si te ofrece “Rebase”, usa “Merge” salvo que se indique lo contrario en la práctica.</p>
+    </section>
+
+    <section id="terminal" class="card">
+      <h2>💻 Plan B por terminal (equivalencias)</h2>
+      <details open>
+        <summary>Comandos esenciales</summary>
+        <pre><code># Configurar identidad (global)
+git config --global user.name "Nombre Apellidos"
+git config --global user.email tu-email@ejemplo.com
+
+# Clonar tu fork (HTTPS)
+git clone https://github.com/&lt;tu_usuario&gt;/mi-web-estatica.git
+cd mi-web-estatica
+
+# Conectar upstream
+git remote add upstream https://github.com/profeInformatica101/mi-web-estatica.git
+git fetch upstream
+
+# Crear rama de trabajo
+git checkout -b feat/cabecera
+
+# Guardar cambios
+git add .
+git commit -m "feat: nueva cabecera responsive"
+
+# Subir rama a tu fork
+git push -u origin feat/cabecera
+
+# Actualizar main con upstream
+git checkout main
+git fetch upstream
+git merge upstream/main
+git push origin main
+</code></pre>
+      </details>
+      <details>
+        <summary>Tokens y credenciales</summary>
+        <p>Cuando Git pida usuario/contraseña por HTTPS, usa tu usuario GitHub y como contraseña tu <strong>PAT</strong> (token). En Windows se guarda en <em>Credential Manager</em>; en Linux/macOS puedes usar <code>git-credential-manager</code> o el llavero del sistema.</p>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>🧩 Resolución de conflictos (resumen)</h2>
+      <ol>
+        <li>Pull/merge y aparece un conflicto: archivos marcados con <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</li>
+        <li>En Eclipse, abre el comparador y elige qué cambios conservar (o combina ambos).</li>
+        <li>Marca como resuelto: vuelve a “stage”, haz <em>commit</em> y sube.</li>
+      </ol>
+      <p class="hint">Consejo: commits pequeños + ramas → menos conflictos.</p>
+    </section>
+
+    <section class="card">
+      <h2>🧰 Extras útiles</h2>
+      <ul>
+        <li><strong>Stash</strong> (guardar cambios sin commit): <em>Team → Stashes…</em>.</li>
+        <li><strong>.gitignore</strong>: evita subir <code>.settings/</code>, <code>.project</code>, ficheros temporales, etc.</li>
+        <li><strong>Historial</strong>: botón derecho archivo → <em>Team → Show in History</em>.</li>
+        <li><strong>Blame/Annotate</strong>: quién cambió cada línea.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>✅ Checklist de progreso</h2>
+      <div class="checklist" id="checklist">
+        <label><input type="checkbox"/> Identidad Git configurada (nombre y email)</label>
+        <label><input type="checkbox"/> Token GitHub creado y probado en Eclipse</label>
+        <label><input type="checkbox"/> Fork clonado en Eclipse (EGit)</label>
+        <label><input type="checkbox"/> Commit con mensaje claro</label>
+        <label><input type="checkbox"/> Push a <code>origin/main</code></label>
+        <label><input type="checkbox"/> Rama de trabajo creada y publicada</label>
+        <label><input type="checkbox"/> Upstream añadido y sincronizado</label>
+        <label><input type="checkbox"/> Conflicto resuelto (si aplica)</label>
+        <div class="progress" aria-label="Avance de la práctica"><i id="bar"></i></div>
+        <p class="hint" id="progressHint">0% completado</p>
+      </div>
+    </section>
+
+    <section id="entrega" class="card">
+      <h2>📤 Entrega (Moodle)</h2>
+      <ol>
+        <li>Sube un <strong>PDF</strong> con:
+          <ul>
+            <li>Captura de <em>Preferences → Team → Git → Configuration</em> (user.name y user.email).</li>
+            <li>Evidencia de clonado con EGit y vista <em>Git Repositories</em>.</li>
+            <li>Historial de commits y ejemplo de <em>Git Staging</em> con tu mensaje.</li>
+            <li>Captura del push realizado en Eclipse y repo en GitHub con tus commits.</li>
+            <li>Rama creada (<code>feat/…</code>) visible en GitHub.</li>
+            <li>Remoto <code>upstream</code> configurado y sincronización con <code>upstream/main</code>.</li>
+          </ul>
+        </li>
+        <li>Incluye una breve <strong>reflexión</strong> (5–8 líneas): qué te costó más, cómo lo solucionaste y qué automatizarías.</li>
+      </ol>
+      <details>
+        <summary>Plantilla mínima sugerida</summary>
+        <pre><code># Práctica 3 · Conectar Eclipse con GitHub (EGit)
+
+## 1. Configuración de identidad y token
+(Capturas y notas)
+
+## 2. Clonado e importación con EGit
+(Capturas de la vista Git y del proyecto)
+
+## 3. Commits y push
+(Staging, mensajes, push y repo en GitHub)
+
+## 4. Ramas y Pull Request
+(Captura de la rama y PR si aplica)
+
+## 5. Upstream y sincronización
+(Captura de upstream y merge desde upstream/main)
+
+## 6. Reflexión
+(5–8 líneas)
+</code></pre>
+      </details>
+    </section>
+
+    <section id="rubrica" class="card">
+      <h2>📏 Rúbrica de evaluación (10 puntos)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Descripción</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Configuración</td>
+            <td>Identidad Git y token configurados correctamente (evidencias)</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Clonado e importación</td>
+            <td>Proyecto clonado con EGit y abierto en Eclipse</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Commits y Push</td>
+            <td>Commits atómicos con mensajes claros y push correcto</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Ramas</td>
+            <td>Creación y uso de una rama de trabajo publicada</td>
+            <td>1.5</td>
+          </tr>
+          <tr>
+            <td>Upstream</td>
+            <td>Remoto añadido y sincronización con upstream/main</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Reflexión</td>
+            <td>Análisis personal (dificultades y aprendizajes)</td>
+            <td>0.5</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hint">Extra (≤ +0,5): .gitignore bien aplicado, PR abierto desde rama, captura de resolución de conflicto.</p>
+    </section>
+
+    <section id="faq" class="card">
+      <h2>❓ FAQ / Ayuda rápida</h2>
+      <details>
+        <summary>Me pide usuario/contraseña al hacer push</summary>
+        <p>Usa tu usuario de GitHub y como contraseña tu <strong>token</strong>. Marca “recordar credenciales”.</p>
+      </details>
+      <details>
+        <summary>Error de permisos (403) al pushear</summary>
+        <ul>
+          <li>Comprueba que la URL remota es tu <strong>fork</strong> (origin), no el repo del profesor.</li>
+          <li>Regenéra el token con permiso al repo si es <em>fine-grained</em>.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>El cortafuegos del centro bloquea conexiones</summary>
+        <p>Usa HTTPS (443) y, si hay proxy, configúralo en <em>Window → Preferences → General → Network Connections</em>.</p>
+      </details>
+      <details>
+        <summary>No me aparece EGit</summary>
+        <p>Instala “<em>Eclipse Git Team Provider</em>” desde <em>Help → Eclipse Marketplace…</em> o “Install New Software…”.</p>
+      </details>
+      <details>
+        <summary>Conflictos al hacer Pull</summary>
+        <p>Usa el comparador integrado para resolver. Luego <em>stage</em> → <em>commit</em> → <em>push</em>.</p>
+      </details>
+    </section>
+
+  </main>
+
+  <footer class="wrap">
+    <p>© Entornos de Desarrollo · DAW1 — Práctica 3. Hecho con ❤️ para aprender mejor.</p>
+  </footer>
+
+  <script>
+    // Checklist con barra de progreso
+    (function(){
+      const list = document.getElementById('checklist');
+      const bar = document.getElementById('bar');
+      const hint = document.getElementById('progressHint');
+      if(!list) return;
+      const inputs = list.querySelectorAll('input[type="checkbox"]');
+      const update = ()=>{
+        const done = [...inputs].filter(i=>i.checked).length;
+        const pct = Math.round((done/inputs.length)*100);
+        bar.style.width = pct + '%';
+        hint.textContent = pct + '% completado';
+      };
+      inputs.forEach(i=> i.addEventListener('change', update));
+      update();
+    })();
+  </script>
+</body>
+</html>

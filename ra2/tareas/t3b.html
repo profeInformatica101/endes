@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAW1 · Práctica 3 · Temas, Fuentes (Package Explorer) y Consistencia del Código</title>
+  <meta name="description" content="Personaliza Eclipse: tema oscuro/claro o DevStyle, ajusta las fuentes del Package Explorer y del editor, y añade EditorConfig y Prettier para un estilo de código consistente.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .kbd{background:#111;border:1px solid #333;border-radius:.3rem;padding:.1rem .35rem;font-family:ui-monospace,Consolas,monospace}
+    .code{background:#0d1117;border:1px solid #30363d;border-radius:.5rem;padding:.75rem;font-family:ui-monospace,Consolas,monospace}
+    .progress-slim{height:.6rem}
+    .sticky-top-blur{backdrop-filter:saturate(180%) blur(6px); background:rgba(0,0,0,.6)}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top sticky-top-blur border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">DAW1 · Práctica 3</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Alternar navegación">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto small">
+          <li class="nav-item"><a class="nav-link" href="#objetivo">Objetivo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#correcciones">Correcciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="#temas">Temas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#fuentes">Fuentes (Package Explorer)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#plugins">Plugins</a></li>
+          <li class="nav-item"><a class="nav-link" href="#entrega">Entrega</a></li>
+          <li class="nav-item"><a class="nav-link" href="#rubrica">Rúbrica</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#recursos">Recursos</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+
+    <!-- Objetivo -->
+    <section id="objetivo" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <span class="badge text-bg-primary mb-2">Entornos de Desarrollo · DAW1</span>
+          <h1 class="h4 mb-2">🎯 Objetivo</h1>
+          <p class="mb-0">Aplicar un tema (oscuro/claro o DevStyle), ajustar <strong>las fuentes de la vista Package Explorer</strong> y del editor, y añadir <strong>EditorConfig</strong> + <strong>Prettier Formatter</strong> para mantener un estilo de código consistente en proyectos web.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Correcciones detectadas -->
+    <section id="correcciones" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🛠️ Correcciones / Afinado</h2>
+          <ul class="mb-0">
+            <li>Para cambiar la <strong>fuente del Package Explorer</strong>, usa <span class="kbd">Window → Preferences → General → Appearance → Colors and Fonts</span> y ajusta <strong>Tree and Table font</strong> (a veces bajo “View and Editor Folders”). Esto afecta a texto de árboles/tablas en vistas como Package/Project Explorer.</li>
+            <li><strong>EditorConfig</strong> en Eclipse aplica reglas al abrir o enfocar el editor; no requiere configuración adicional (más allá del archivo <code>.editorconfig</code>).</li>
+            <li><strong>Enfoque de iconos</strong>: priorizamos el cambio de <strong>fuente del árbol</strong> (legibilidad) en lugar de auto-escalado global, que puede degradar iconos rasterizados.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Temas -->
+    <section id="temas" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🌓 Temas / Apariencia</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Tema nativo</h3>
+                <ol class="mb-0">
+                  <li>Abre <span class="kbd">Window → Preferences → General → Appearance → Theme</span> (o <span class="kbd">Window → Theme</span> en algunas versiones).</li>
+                  <li>Selecciona <strong>Dark</strong> o <strong>Light</strong> y aplica.</li>
+                </ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">DevStyle / Darkest Dark</h3>
+                <ol class="mb-2">
+                  <li><span class="kbd">Help → Eclipse Marketplace…</span>, busca <strong>DevStyle</strong> o <strong>Darkest Dark</strong> e instala; reinicia.</li>
+                  <li>Ajustes en <span class="kbd">Preferences → DevStyle → Color Theme</span> (varias variantes).</li>
+                </ol>
+                <p class="small text-secondary mb-0">Alternativa moderna con más presets de color.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fuentes (Package Explorer + editor) -->
+    <section id="fuentes" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🔠 Fuentes del IDE y del Package Explorer</h2>
+
+          <div class="mb-3">
+            <h3 class="h6 mb-2">1) Fuente del editor (código)</h3>
+            <ol class="mb-2">
+              <li>Abrir <span class="kbd">Window → Preferences → General → Appearance → Colors and Fonts</span>.</li>
+              <li>En Java: <strong>Java → Java Editor Text Font → Edit…</strong>. Para HTML/CSS/JS, revisa las secciones de <em>Syntax Coloring</em> del editor correspondiente.</li>
+            </ol>
+            <p class="small text-secondary mb-0">Usa una monoespaciada legible (p. ej., JetBrains Mono, Fira Code, Cascadia Code).</p>
+          </div>
+
+          <div class="mb-2">
+            <h3 class="h6 mb-2">2) Fuente del Package Explorer (árbol)</h3>
+            <ol class="mb-2">
+              <li>En <strong>Colors and Fonts</strong>, localiza <strong>Tree and Table font</strong> (a veces “View and Editor Folders / Tree and Table font”).</li>
+              <li>Pulsa <strong>Edit…</strong> y ajusta el tamaño deseado. Verás el cambio en <em>Package Explorer</em> y otras vistas basadas en árbol/tabla.</li>
+              <li>Si no aprecias el cambio, reinicia Eclipse para refrescar métricas de UI.</li>
+            </ol>
+            <p class="small text-secondary mb-0">Nota: los iconos son bitmaps; aumentar la fuente mejora la legibilidad de la lista, pero no siempre escala los gráficos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plugins -->
+    <section id="plugins" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🔧 Plugins recomendados</h2>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6 mb-1">EditorConfig (consistencia de estilo)</h3>
+                <p class="small mb-2">Aplica reglas de <code>.editorconfig</code> al abrir/enfocar el editor (indentación, EOF, trimming, etc.).</p>
+                <ol class="mb-2">
+                  <li><span class="kbd">Help → Eclipse Marketplace…</span> → busca <strong>EditorConfig</strong> → Install → reinicia.</li>
+                  <li>Crea <code>.editorconfig</code> en la raíz del proyecto:</li>
+                </ol>
+                <pre class="code mb-2">root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.java]
+indent_size = 4</pre>
+                <p class="small text-secondary">Al reabrir/enfocar archivos, Eclipse aplicará las reglas.</p>
+                <p class="small mb-0">
+                  <strong>Enlaces oficiales:</strong>
+                  <a class="link-light" href="https://editorconfig.org/" target="_blank" rel="noopener">editorconfig.org</a> ·
+                  <a class="link-light" href="https://spec.editorconfig.org/" target="_blank" rel="noopener">Especificación oficial</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6 mb-1">Prettier Formatter (formateo web)</h3>
+                <p class="small mb-2">Formateador opinionado para HTML/CSS/JS/TS, etc., integrado en Eclipse. Muy útil junto a EditorConfig.</p>
+                <ol class="mb-2">
+                  <li><span class="kbd">Help → Eclipse Marketplace…</span> → busca <strong>Prettier Formatter</strong> → Install → reinicia.</li>
+                  <li>En proyectos web, añade <code>prettier</code> y ejecuta el formateo desde el menú o un atajo.</li>
+                </ol>
+                <p class="small text-secondary mb-0">Ayuda a unificar estilo de código front-end.</p>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6 mb-1">Opcional: AnyEdit Tools (productividad)</h3>
+                <p class="small mb-2">Conversión Tabs↔Spaces, Base64, mayúsculas/minúsculas, etc.</p>
+                <p class="small mb-0"><span class="kbd">Help → Eclipse Marketplace…</span> → busca <strong>AnyEdit Tools</strong> → Install.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Entrega -->
+    <section id="entrega" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">📤 Entrega (Moodle)</h2>
+          <ol class="mb-0">
+            <li>Sube un PDF con:
+              <ul>
+                <li>Captura del <strong>tema</strong> aplicado (Dark/Light o DevStyle).</li>
+                <li>Captura de <strong>Colors and Fonts</strong> mostrando el cambio en <strong>Tree and Table font</strong> y una vista del <em>Package Explorer</em> antes/después.</li>
+                <li>Archivo <code>.editorconfig</code> (contenido) y evidencia de aplicación al abrir/enfocar archivos.</li>
+                <li>(Opcional) Demostración de Prettier Formatter y/o AnyEdit Tools.</li>
+                <li>(Opcional) Enlaces a <a class="link-light" href="https://editorconfig.org/" target="_blank" rel="noopener">editorconfig.org</a> y a la <a class="link-light" href="https://spec.editorconfig.org/" target="_blank" rel="noopener">especificación</a> en tu bibliografía.</li>
+              </ul>
+            </li>
+            <li>Reflexión (5–8 líneas): combinación de tema + tamaño de fuente del <em>Package Explorer</em> + reglas de estilo que más te ayudan a leer/escribir mejor.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rúbrica -->
+    <section id="rubrica" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">📏 Rúbrica (10 puntos)</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead class="table-dark">
+                <tr><th>Criterio</th><th>Descripción</th><th class="text-end">Puntos</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Tema / apariencia</td><td>Aplicación correcta de tema nativo o DevStyle</td><td class="text-end">2</td></tr>
+                <tr><td>Editor (fuente y sintaxis)</td><td>Fuente monoespaciada legible + colores de sintaxis</td><td class="text-end">2</td></tr>
+                <tr><td>Package Explorer (fuente)</td><td>Ajuste adecuado de <em>Tree and Table font</em> con captura antes/después</td><td class="text-end">2</td></tr>
+                <tr><td>EditorConfig</td><td><code>.editorconfig</code> creado y aplicado en Eclipse</td><td class="text-end">2</td></tr>
+                <tr><td>Documentación visual</td><td>Capturas claras de todos los pasos</td><td class="text-end">1</td></tr>
+                <tr><td>Reflexión</td><td>Comentario personal breve y útil</td><td class="text-end">1</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-secondary mt-2 mb-0">Extra (≤ +0,5): uso de Prettier y/o AnyEdit con ejemplos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">❓ FAQ</h2>
+          <div class="accordion" id="faqAcc">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f1">No encuentro “Tree and Table font”</button>
+              </h2>
+              <div id="f1" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                <div class="accordion-body small">
+                  Busca en <span class="kbd">Colors and Fonts</span> dentro de “Basic” o “View and Editor Folders”. En algunas builds el nombre exacto puede variar, pero la opción está en esa zona.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f2">EditorConfig no parece aplicarse</button>
+              </h2>
+              <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                <div class="accordion-body small">
+                  Asegúrate de que <code>.editorconfig</code> está en la ruta adecuada y vuelve a <em>abrir/enfocar</em> el archivo en el editor; así se aplican las reglas.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f3">¿Merece la pena Prettier en Eclipse?</button>
+              </h2>
+              <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                <div class="accordion-body small">
+                  Sí, para proyectos web estandariza el formato y complementa EditorConfig. El plugin “Prettier Formatter” integra el motor en Eclipse.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Checklist simple -->
+          <div class="mt-4">
+            <h3 class="h6">Checklist</h3>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label" for="c1">Tema aplicado (Dark/Light o DevStyle)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label" for="c2">Fuente del editor ajustada</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c3"><label class="form-check-label" for="c3">Fuente del Package Explorer ajustada</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c4"><label class="form-check-label" for="c4"><code>.editorconfig</code> creado y aplicado</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c5"><label class="form-check-label" for="c5">(Opc.) Prettier / AnyEdit probados</label>
+            </div>
+            <div class="progress progress-slim mt-2">
+              <div class="progress-bar" id="bar" style="width:0%"></div>
+            </div>
+            <p class="small text-secondary mt-2 mb-0" id="hint">0% completado</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recursos -->
+    <section id="recursos" class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🔗 Recursos oficiales EditorConfig</h2>
+          <ul class="mb-0">
+            <li><a class="link-light" href="https://editorconfig.org/" target="_blank" rel="noopener">Sitio oficial: editorconfig.org</a></li>
+            <li><a class="link-light" href="https://spec.editorconfig.org/" target="_blank" rel="noopener">Especificación oficial: spec.editorconfig.org</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-3">
+    <div class="container small text-secondary">
+      © Entornos de Desarrollo · DAW1 — Práctica 3. Hecho con ❤️ para aprender mejor.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Checklist → progreso
+    (function(){
+      const boxes = document.querySelectorAll('.form-check-input');
+      const bar = document.getElementById('bar');
+      const hint = document.getElementById('hint');
+      function update(){
+        const done = [...boxes].filter(b=>b.checked).length;
+        const pct = Math.round((done / boxes.length) * 100);
+        bar.style.width = pct + '%';
+        hint.textContent = pct + '% completado';
+      }
+      boxes.forEach(b => b.addEventListener('change', update));
+      update();
+    })();
+  </script>
+</body>
+</html>
