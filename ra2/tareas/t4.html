@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DAW1 · Práctica 4 · SSH + Eclipse: repo vacío → Java → commit/push → pull</title>
-  <meta name="description" content="Configura claves SSH, importa un repositorio vacío en Eclipse, crea un proyecto Java dentro, comitea y sube los cambios. Además: modifica desde la web de GitHub y haz pull en Eclipse.">
+  <title>DAW1 · Práctica 4 · Python básico en Eclipse (PyDev) + Copilot4Eclipse</title>
+  <meta name="description" content="Comprueba/instala Python en Windows/Linux, instala PyDev en Eclipse, ejecuta ejemplos muy sencillos y usa Copilot4Eclipse con 5 mini-prácticas básicas.">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .kbd{background:#111;border:1px solid #333;border-radius:.3rem;padding:.1rem .35rem;font-family:ui-monospace,Consolas,monospace}
-    .code{background:#0d1117;border:1px solid #30363d;border-radius:.5rem;padding:.75rem;font-family:ui-monospace,Consolas,monospace;white-space:pre;display:block}
+    .code{background:#0d1117;border:1px solid #30363d;border-radius:.5rem;padding:.75rem;white-space:pre;display:block;font-family:ui-monospace,Consolas,monospace}
     .progress-slim{height:.6rem}
     .sticky-top-blur{backdrop-filter:saturate(180%) blur(6px); background:rgba(0,0,0,.6)}
-    a.link-light{ text-decoration: underline; }
+    .hint{color:#9aa4b2;font-size:.9rem}
+    .ext a{text-decoration:underline}
   </style>
 </head>
 <body>
@@ -25,9 +26,11 @@
         <ul class="navbar-nav ms-auto small">
           <li class="nav-item"><a class="nav-link" href="#objetivo">Objetivo</a></li>
           <li class="nav-item"><a class="nav-link" href="#requisitos">Requisitos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#pasos">Pasos (Eclipse + SSH)</a></li>
-          <li class="nav-item"><a class="nav-link" href="#codigo">Código Java</a></li>
-          <li class="nav-item"><a class="nav-link" href="#practicaB">Práctica B: cambio web + pull</a></li>
+          <li class="nav-item"><a class="nav-link" href="#python-install">Comprobar/instalar Python</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pydev">Instalar PyDev</a></li>
+          <li class="nav-item"><a class="nav-link" href="#python">Probar Python (muy básico)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#copilot">Instalar Copilot4Eclipse</a></li>
+          <li class="nav-item"><a class="nav-link" href="#practicas">5 mini-prácticas con Copilot</a></li>
           <li class="nav-item"><a class="nav-link" href="#entrega">Entrega</a></li>
           <li class="nav-item"><a class="nav-link" href="#rubrica">Rúbrica</a></li>
           <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
@@ -44,7 +47,7 @@
         <div class="card-body">
           <span class="badge text-bg-primary mb-2">Entornos de Desarrollo · DAW1</span>
           <h1 class="h4 mb-2">🎯 Objetivo</h1>
-          <p class="mb-0">Trabajar con <strong>SSH en GitHub</strong> y <strong>Eclipse (EGit)</strong>: importar un <strong>repositorio vacío por SSH</strong>, crear un <strong>proyecto Java</strong> dentro, probar el código, y <strong>comitear/subir</strong> los cambios desde Eclipse. Además, realizar una modificación en la <strong>web de GitHub</strong> y hacer <strong>pull</strong> en Eclipse.</p>
+          <p class="mb-0">Comprobar e <strong>instalar Python</strong> (Windows/Linux), instalar <strong>PyDev</strong> en Eclipse, configurar el intérprete y ejecutar <strong>programas muy sencillos</strong>. Después, instalar <strong>Copilot4Eclipse</strong> y realizar <strong>5 mini-prácticas básicas</strong> para aprender a usar Copilot con Python.</p>
         </div>
       </div>
     </section>
@@ -55,190 +58,257 @@
         <div class="card-body">
           <h2 class="h5 mb-3">✅ Requisitos previos</h2>
           <ul class="mb-2">
-            <li>Cuenta en <strong>GitHub</strong>.</li>
-            <li><strong>Eclipse</strong> con EGit (viene por defecto en distribuciones recientes).</li>
-            <li><strong>Claves SSH</strong> configuradas en tu máquina y añadidas a GitHub.</li>
+            <li>Eclipse reciente con acceso a <em>Marketplace</em>.</li>
+            <li><strong>Todos los alumnos tienen cuenta de GitHub.</strong></li>
+            <li>Equipo con <strong>Windows o Linux</strong>.</li>
           </ul>
+          <p class="hint mb-0">No es necesario saber Python. Pensad en paralelos con Java: <em>print</em>, variables, <em>if</em>, <em>for</em> y funciones.</p>
+        </div>
+      </div>
+    </section>
 
-          <h3 class="h6 mt-3">1) Generar y registrar claves SSH</h3>
-          <p class="small mb-2">Recomendado: <strong>ed25519</strong>. En <em>Git Bash</em> (Windows), Terminal (macOS/Linux):</p>
-          <pre class="code">ssh-keygen -t ed25519 -C "tu-email@example.com"
-# Pulsa Enter para aceptar la ruta (~/.ssh/id_ed25519) y, opcionalmente, pon passphrase.
+    <!-- Comprobar/instalar Python -->
+    <section id="python-install" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🐍 Comprobar e instalar Python (Windows / Linux)</h2>
 
-# Inicia el agente SSH y añade la clave:
-# macOS / Linux
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Windows</h3>
+                <ol class="mb-2">
+                  <li>En <span class="kbd">PowerShell</span> o <span class="kbd">CMD</span>:
+                    <pre class="code">py --version
+python --version</pre>
+                    <span class="hint">Si sale 3.x, ya lo tienes.</span>
+                  </li>
+                  <li>Si falta: descarga el instalador desde <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org/downloads</a> (3.11+). Marca <strong>Add python.exe to PATH</strong>.</li>
+                  <li>Verifica:
+                    <pre class="code">py --version
+py -0p</pre>
+                  </li>
+                  <li class="ext hint">Guía oficial Windows: <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">docs.python.org/3/using/windows.html</a></li>
+                </ol>
+              </div>
+            </div>
 
-# Windows (Git Bash): el mismo comando suele funcionar
-# (Si falla, inicia "OpenSSH Authentication Agent" en Servicios y repite ssh-add)</pre>
-          <p class="small mb-2">Copia tu <strong>clave pública</strong> y súbela a GitHub: <em>Settings → SSH and GPG keys → New SSH key</em>.</p>
-          <pre class="code">cat ~/.ssh/id_ed25519.pub</pre>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Linux (Debian/Ubuntu/Fedora…)</h3>
+                <ol class="mb-2">
+                  <li>Prueba:
+                    <pre class="code">python3 --version
+which python3</pre>
+                  </li>
+                  <li>Instala si falta:
+                    <pre class="code"># Debian/Ubuntu
+sudo apt update
+sudo apt install -y python3 python3-venv python3-pip
 
-          <h3 class="h6 mt-3">2) Crear repositorio vacío en GitHub</h3>
-          <ol class="mb-0">
-            <li>GitHub → <strong>New</strong> → nombre (p.ej., <code>daw1-practica4-ssh</code>), <em>vacío</em> (no añadas README ni .gitignore), <strong>Create repository</strong>.</li>
-            <li>Copia la URL <strong>SSH</strong>: <code>git@github.com:&lt;tu_usuario&gt;/daw1-practica4-ssh.git</code></li>
+# Fedora
+sudo dnf install -y python3 python3-pip python3-virtualenv</pre>
+                  </li>
+                  <li class="ext hint">Guía Unix/Linux: <a href="https://docs.python.org/3/using/unix.html" target="_blank" rel="noopener">docs.python.org/3/using/unix.html</a></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-1">
+            <div class="col-12">
+              <div class="p-3 border rounded-3">
+                <h3 class="h6 mb-2">Enlaces útiles</h3>
+                <ul class="mb-0 ext">
+                  <li><a href="https://www.python.org/downloads/" target="_blank" rel="noopener">Descargas de Python (python.org)</a></li>
+                  <li><a href="https://pip.pypa.io/en/stable/installation/" target="_blank" rel="noopener">Instalar/actualizar pip (pypa.io)</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Instalar PyDev -->
+    <section id="pydev" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🧩 Instalar PyDev en Eclipse</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Opción A — Eclipse Marketplace</h3>
+                <ol class="mb-0">
+                  <li><span class="kbd">Help → Eclipse Marketplace…</span></li>
+                  <li>Busca <strong>PyDev</strong> → <em>Install</em> → <em>Confirm</em> → reinicia.</li>
+                </ol>
+                <p class="hint mt-2 mb-0">Si falla el Marketplace, usa el <em>update site</em> (Opción B).</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Opción B — Update Site</h3>
+                <ol class="mb-2">
+                  <li><span class="kbd">Help → Install New Software… → Add…</span></li>
+                  <li><em>Name</em>: PyDev · <em>Location</em>: <code>https://www.pydev.org/updates</code></li>
+                  <li>Marca <em>PyDev</em> → <em>Next</em> → <em>Finish</em> → reinicia.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <h3 class="h6">Configurar el intérprete</h3>
+            <ol class="mb-0">
+              <li><span class="kbd">Window → Preferences → PyDev → Interpreters → Python Interpreter</span></li>
+              <li><strong>New…</strong> y elige el ejecutable:
+                <ul>
+                  <li>Windows: ruta típica <code>...Python311/python.exe</code> (o usa el selector).</li>
+                  <li>Linux: <code>/usr/bin/python3</code> (o el que indique <span class="kbd">which python3</span>).</li>
+                </ul>
+              </li>
+              <li>Acepta rutas detectadas → <strong>Apply and Close</strong>.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Probar Python (muy básico) -->
+    <section id="python" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🧪 Programa de prueba (muy básico)</h2>
+          <ol>
+            <li><span class="kbd">File → New → Project… → PyDev → PyDev Project</span></li>
+            <li>Nombre: <code>pydev-basico</code> · Intérprete: el configurado.</li>
+            <li>Crea <code>src/main.py</code> con este código paso a paso:</li>
           </ol>
+
+          <h3 class="h6 mt-3">1) Hola mundo y variables</h3>
+          <pre class="code">print("Hola desde Python 👋")
+nombre = "Ada"
+edad = 19
+print("Nombre:", nombre, "Edad:", edad)</pre>
+
+          <h3 class="h6 mt-3">2) Entrada por teclado y condicional</h3>
+          <pre class="code">nota = int(input("Introduce tu nota (0-10): "))
+if nota >= 5:
+    print("Aprobado")
+else:
+    print("Suspenso")</pre>
+
+          <h3 class="h6 mt-3">3) Listas y bucle</h3>
+          <pre class="code">nums = [1, 2, 3, 4, 5]
+suma = 0
+for n in nums:
+    suma = suma + n
+print("Suma:", suma, "Media:", suma/len(nums))</pre>
+
+          <h3 class="h6 mt-3">4) Función sencilla</h3>
+          <pre class="code">def cuadrado(x):
+    return x * x
+
+print("Cuadrado de 7 =", cuadrado(7))</pre>
+
+          <p class="hint mb-0">Ejecuta con clic derecho en <code>main.py</code> → <em>Run As → Python Run</em>.</p>
         </div>
       </div>
     </section>
 
-    <!-- Pasos SSH + Eclipse -->
-    <section id="pasos" class="mb-4">
+    <!-- Copilot -->
+    <section id="copilot" class="mb-4">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <h2 class="h5 mb-3">🛠️ Pasos (Eclipse + SSH)</h2>
-
-          <div class="mb-4">
-            <h3 class="h6">A) Abrir la perspectiva Git en Eclipse</h3>
-            <ol>
-              <li><span class="kbd">Window → Perspective → Open Perspective → Other…</span></li>
-              <li>Selecciona <strong>Git</strong> y pulsa <strong>Open</strong>.</li>
-              <li>Se abrirán vistas como <em>Git Repositories</em>, <em>Git Staging</em>, etc.</li>
-            </ol>
+          <h2 class="h5 mb-3">🤖 Instalar Copilot4Eclipse</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Instalación</h3>
+                <ol class="mb-2">
+                  <li><span class="kbd">Help → Eclipse Marketplace…</span></li>
+                  <li>Busca <strong>Copilot4Eclipse</strong> (Genuitec) → <em>Install</em> → reinicia.</li>
+                  <li>Inicia sesión con tu cuenta de GitHub cuando lo solicite.</li>
+                </ol>
+                <p class="hint mb-0">Si no ves sugerencias, comprueba que Copilot esté habilitado y la sesión activa.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Prueba rápida</h3>
+                <ul class="mb-0">
+                  <li>Abre <code>main.py</code> y escribe: <code># función que devuelve el mayor de dos números</code>.</li>
+                  <li>Deberías ver una sugerencia. Acepta con <span class="kbd">Tab</span>.</li>
+                </ul>
+              </div>
+            </div>
           </div>
 
-          <div class="mb-4">
-            <h3 class="h6">B) Clonar el repositorio vacío por SSH</h3>
-            <ol>
-              <li>En la perspectiva Git, en la vista <strong>Git Repositories</strong>, clic en <em>Clone a Git repository</em> (o botón <em>Clone</em>).</li>
-              <li>Elige <strong>Clone URI</strong> y pega la URI SSH: <code>git@github.com:&lt;tu_usuario&gt;/daw1-practica4-ssh.git</code>.</li>
-              <li>Autentícate con tu clave (si pide passphrase).</li>
-              <li>Selecciona la rama <code>main</code> (si no existe, Eclipse la creará al primer push).</li>
-              <li>Elige carpeta local de clonación y finaliza.</li>
-            </ol>
-            <p class="small text-secondary mb-0">El repo está vacío: aún no habrá proyecto en <em>Git Repositories → Working Tree</em>.</p>
+          <div class="mt-3">
+            <h3 class="h6">Buenas prácticas</h3>
+            <ul class="mb-0">
+              <li>Escribe un <strong>comentario claro</strong> antes de pedir código.</li>
+              <li>Revisa lo que sugiere y <strong>modifícalo</strong> si hace falta.</li>
+              <li>Divide problemas en <strong>funciones pequeñas</strong>.</li>
+              <li>Pide ejemplos de <strong>tests sencillos</strong> (con <code>assert</code>).</li>
+            </ul>
           </div>
-
-          <div class="mb-4">
-            <h3 class="h6">C) Crear <u>dentro del repo</u> un Proyecto Java</h3>
-            <ol>
-              <li>Cambia a perspectiva Java o mantenla actual.</li>
-              <li><span class="kbd">File → New → Java Project</span></li>
-              <li>Nombre: <code>hola-mundo</code> (o el que prefieras).</li>
-              <li><strong>Importante:</strong> desmarca <em>Use default location</em> y selecciona como ubicación la <strong>carpeta del repo clonado</strong>.</li>
-              <li>Finish. Eclipse creará <code>src/</code>, <code>.project</code>, <code>.classpath</code> dentro del repo.</li>
-              <li>Crea el paquete <code>app</code> y la clase <code>Main</code> (ver ejemplo abajo).</li>
-            </ol>
-          </div>
-
-          <div class="mb-4">
-            <h3 class="h6">D) Preparar .gitignore (recomendado)</h3>
-            <p class="mb-2">En la raíz del repo crea <code>.gitignore</code> (para no subir binarios/archivos de IDE):</p>
-            <pre class="code"># Eclipse & Java
-.classpath
-.project
-.settings/
-bin/
-target/
-
-# IDEs
-.idea/
-*.iml
-.vscode/
-
-# SO
-.DS_Store
-Thumbs.db</pre>
-          </div>
-
-          <div class="mb-4">
-            <h3 class="h6">E) Comitear y subir desde Eclipse (EGit)</h3>
-            <ol>
-              <li>Abre la vista <strong>Git Staging</strong> (si no la ves: <span class="kbd">Window → Show View → Other… → Git → Git Staging</span>).</li>
-              <li>En <em>Unstaged Changes</em> selecciona tus archivos (src/, .gitignore, etc.) y pulsa <strong>+</strong> para pasarlos a <em>Staged Changes</em>.</li>
-              <li>Escribe un mensaje, p.ej.: <code>feat: proyecto Java inicial</code>.</li>
-              <li>Pulsa <strong>Commit and Push</strong>. Revisa la URL SSH de <code>origin</code> y confirma.</li>
-            </ol>
-            <p class="small text-secondary mb-0">Verifica en GitHub que ya aparecen los archivos.</p>
-          </div>
-
-          <div>
-            <h3 class="h6">F) Ejecutar el proyecto</h3>
-            <ol>
-              <li>En el <em>Package Explorer</em>, clic derecho en <code>Main</code> → <span class="kbd">Run As → Java Application</span>.</li>
-              <li>Comprueba la salida en la consola de Eclipse.</li>
-            </ol>
-          </div>
-
         </div>
       </div>
     </section>
 
-    <!-- Código de ejemplo -->
-    <section id="codigo" class="mb-4">
+    <!-- 5 mini-prácticas con Copilot -->
+    <section id="practicas" class="mb-4">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <h2 class="h5 mb-3">💻 Código de ejemplo (Java)</h2>
-          <p class="mb-2">Paquete <code>app</code> con <code>Main</code> y <code>Calculator</code>. Guarda estos archivos en <code>src/</code>:</p>
+          <h2 class="h5 mb-3">🧩 5 mini-prácticas básicas con Copilot (Python)</h2>
 
-          <h3 class="h6">src/app/Main.java</h3>
-          <pre class="code">package app;
-
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hola, DAW1 👋");
-
-        Calculator calc = new Calculator();
-        int a = 7, b = 5;
-
-        System.out.printf("Suma %d + %d = %d%n", a, b, calc.add(a, b));
-        System.out.printf("Producto %d × %d = %d%n", a, b, calc.mul(a, b));
-
-        // Argumentos opcionales
-        if (args.length &gt; 0) {
-            System.out.println("Argumentos recibidos:");
-            for (int i = 0; i &lt; args.length; i++) {
-                System.out.printf("  [%d] %s%n", i, args[i]);
-            }
-        }
-    }
-}</pre>
-
-          <h3 class="h6 mt-3">src/app/Calculator.java</h3>
-          <pre class="code">package app;
-
-public class Calculator {
-    public int add(int a, int b) { return a + b; }
-    public int sub(int a, int b) { return a - b; }
-    public int mul(int a, int b) { return a * b; }
-
-    public int safeDiv(int a, int b) {
-        if (b == 0) throw new IllegalArgumentException("No se puede dividir por cero");
-        return a / b;
-    }
-}</pre>
-
-          <p class="small text-secondary mb-0">Ejecución: clic derecho sobre <code>Main</code> → <em>Run As → Java Application</em>.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Práctica B -->
-    <section id="practicaB" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">🧪 Práctica B — Modificar desde la web y hacer pull en Eclipse</h2>
-
-          <div class="mb-3">
-            <h3 class="h6">1) Cambio en la web de GitHub</h3>
-            <ol>
-              <li>Abre tu repo en GitHub (rama <code>main</code>).</li>
-              <li>Crea/edita un archivo (p.ej., <code>README.md</code>) usando el editor web. Escribe un texto (p.ej., “Proyecto Java con SSH”).</li>
-              <li>Haz <strong>Commit changes</strong> en <code>main</code>.</li>
-            </ol>
+          <div class="p-3 border rounded-3 mb-3">
+            <h3 class="h6 mb-2">1) Mayor de dos números</h3>
+            <p class="mb-1"><strong>Objetivo:</strong> completar una función simple.</p>
+            <pre class="code"># Escribe este comentario y deja que Copilot proponga la función:
+# función mayor(a, b) que devuelve el número más grande
+# Después, añade:
+assert mayor(3, 9) == 9
+assert mayor(-5, -2) == -2</pre>
           </div>
 
-          <div>
-            <h3 class="h6">2) Traer cambios a Eclipse (pull)</h3>
-            <ol>
-              <li>Vuelve a Eclipse, perspectiva Git.</li>
-              <li>En <strong>Git Repositories</strong>, clic derecho sobre tu repo → <strong>Pull</strong> (o <em>Fetch from Upstream</em> y luego <em>Pull</em>).</li>
-              <li>Abre el archivo modificado (p.ej., <code>README.md</code>) en tu <em>Working Tree</em> para verificar que llegó el cambio.</li>
-            </ol>
-            <p class="small text-secondary mb-0">Si hay conflictos, Eclipse mostrará el <em>Merge</em>; resuélvelos, guarda, comitea y vuelve a hacer <em>Push</em> si procede.</p>
+          <div class="p-3 border rounded-3 mb-3">
+            <h3 class="h6 mb-2">2) Suma de una lista</h3>
+            <p class="mb-1"><strong>Objetivo:</strong> usar bucle <em>for</em> y lista.</p>
+            <pre class="code"># Pide: "función suma_lista(nums) que devuelve la suma"
+# Prueba con:
+assert suma_lista([1,2,3]) == 6
+assert suma_lista([]) == 0</pre>
           </div>
+
+          <div class="p-3 border rounded-3 mb-3">
+            <h3 class="h6 mb-2">3) Contar vocales</h3>
+            <p class="mb-1"><strong>Objetivo:</strong> recorrer una cadena y contar.</p>
+            <pre class="code"># Pide: "función contar_vocales(texto) que devuelve cuántas vocales hay (a,e,i,o,u)"
+assert contar_vocales("hola") == 2
+assert contar_vocales("rhythm") == 0</pre>
+          </div>
+
+          <div class="p-3 border rounded-3 mb-3">
+            <h3 class="h6 mb-2">4) Tabla de multiplicar</h3>
+            <p class="mb-1"><strong>Objetivo:</strong> imprimir la tabla de un número con un bucle.</p>
+            <pre class="code"># Pide: "función tabla(n) que imprima del 1 al 10: 'n x i = resultado'"
+# Llama a tabla(5) y revisa la consola.</pre>
+          </div>
+
+          <div class="p-3 border rounded-3">
+            <h3 class="h6 mb-2">5) Mini menú</h3>
+            <p class="mb-1"><strong>Objetivo:</strong> usar <em>input</em> y <em>if</em> básicos.</p>
+            <pre class="code"># Pide: "programa que pregunte 1) saludar 2) sumar 3) salir"
+# Si elige 1 → pide nombre y saluda.
+# Si elige 2 → pide dos números y muestra la suma.
+# Si elige 3 → termina.</pre>
+          </div>
+
+          <p class="hint mt-3 mb-0">Si una propuesta no te gusta, escribe un comentario más específico (por ejemplo: “usa bucle for”, “no uses funciones avanzadas”).</p>
         </div>
       </div>
     </section>
@@ -249,16 +319,15 @@ public class Calculator {
         <div class="card-body">
           <h2 class="h5 mb-3">📤 Entrega (Moodle)</h2>
           <ol class="mb-0">
-            <li>Sube un <strong>PDF</strong> con:
+            <li>PDF con capturas de:
               <ul>
-                <li>Capturas de: clave SSH añadida en GitHub, repositorio vacío (URL SSH), clonación por SSH en Eclipse.</li>
-                <li>Creación del proyecto Java <em>dentro</em> del repo (captura de la ruta sin “default location”).</li>
-                <li>Ejecución de <code>Main</code> (consola) y vista de <em>Git Staging</em> con <em>Commit and Push</em>.</li>
-                <li>Página del repo mostrando los archivos subidos.</li>
-                <li>Práctica B: captura del cambio hecho en la web de GitHub y del <em>Pull</em> en Eclipse (archivo actualizado).</li>
+                <li>Comprobación/instalación de Python (comandos y versión).</li>
+                <li>Instalación de PyDev y <em>Python Interpreter</em> configurado.</li>
+                <li>Proyecto PyDev y salida del programa de prueba.</li>
+                <li>Copilot4Eclipse funcionando (sugerencia inline).</li>
               </ul>
             </li>
-            <li><strong>Reflexión (5–8 líneas):</strong> ventajas de SSH, cómo resolviste cualquier problema de autenticación o conflicto de merge.</li>
+            <li>Para cada mini-práctica: el comentario que escribiste, el código final y 1–2 frases de qué aprendiste.</li>
           </ol>
         </div>
       </div>
@@ -275,15 +344,15 @@ public class Calculator {
                 <tr><th>Criterio</th><th>Descripción</th><th class="text-end">Puntos</th></tr>
               </thead>
               <tbody>
-                <tr><td>SSH configurado</td><td>Claves generadas y registradas en GitHub</td><td class="text-end">2</td></tr>
-                <tr><td>Importación por SSH</td><td>Repo vacío clonado en Eclipse (Git perspective)</td><td class="text-end">2</td></tr>
-                <tr><td>Proyecto Java</td><td>Creado <em>dentro</em> del repo, compila y ejecuta</td><td class="text-end">3</td></tr>
-                <tr><td>Git (commit & push)</td><td>Commit y push correctos desde Eclipse (EGit)</td><td class="text-end">2</td></tr>
-                <tr><td>Práctica B (pull)</td><td>Cambio desde web y pull en Eclipse verificado</td><td class="text-end">1</td></tr>
+                <tr><td>Python instalado</td><td>Comprobado/instalado correctamente</td><td class="text-end">2</td></tr>
+                <tr><td>PyDev + Intérprete</td><td>PyDev instalado y Python configurado</td><td class="text-end">2</td></tr>
+                <tr><td>Programa de prueba</td><td>Ejecuta sin errores</td><td class="text-end">2</td></tr>
+                <tr><td>Copilot4Eclipse</td><td>Plugin instalado y sugerencias visibles</td><td class="text-end">2</td></tr>
+                <tr><td>5 mini-prácticas</td><td>Entregadas con comentario, código y reflexión</td><td class="text-end">2</td></tr>
               </tbody>
             </table>
           </div>
-          <p class="small text-secondary mt-2 mb-0">Extra (≤ +0,5): mensajes de commit claros y/o creación de ramas para pruebas.</p>
+          <p class="hint mt-2 mb-0">Extra (≤ +0,5): añadir un test con <code>assert</code> a cada función y capturas claras.</p>
         </div>
       </div>
     </section>
@@ -296,31 +365,31 @@ public class Calculator {
           <div class="accordion" id="faqAcc">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f1">“Permission denied (publickey)”</button>
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f1">¿Cómo sé si tengo Python?</button>
               </h2>
               <div id="f1" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
                 <div class="accordion-body small">
-                  Asegúrate de que el <strong>agente SSH</strong> tiene añadida tu clave (<code>ssh-add -l</code>), que tu <strong>clave pública</strong> está en GitHub y que usas la <strong>URL SSH</strong> correcta del repo.
+                  Windows: <code>py --version</code>. Linux: <code>python3 --version</code>. Si no sale 3.x, instálalo desde python.org o tu gestor de paquetes.
                 </div>
               </div>
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f2">No veo la perspectiva Git</button>
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f2">PyDev no detecta Python</button>
               </h2>
               <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
                 <div class="accordion-body small">
-                  <span class="kbd">Window → Perspective → Open Perspective → Other… → Git</span>. Si no aparece, instala el componente EGit desde <em>Eclipse Marketplace</em>.
+                  Añádelo en <em>Preferences → PyDev → Interpreters</em> con <strong>New…</strong>. Elige <code>python.exe</code> (Windows) o <code>/usr/bin/python3</code> (Linux).
                 </div>
               </div>
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f3">Conflictos al hacer pull</button>
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f3">No veo sugerencias de Copilot</button>
               </h2>
               <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
                 <div class="accordion-body small">
-                  Eclipse abrirá la vista de <em>Merge</em>. Elige los cambios correctos, guarda, comitea el merge y, si procede, haz <em>Push</em>.
+                  Asegúrate de que Copilot4Eclipse está instalado, has iniciado sesión y está habilitado para Python. Escribe un comentario claro y espera la sugerencia.
                 </div>
               </div>
             </div>
@@ -330,24 +399,27 @@ public class Calculator {
           <div class="mt-4">
             <h3 class="h6">Checklist</h3>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label" for="c1">Claves SSH generadas y registradas en GitHub</label>
+              <input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label" for="c1">Python comprobado/instalado</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label" for="c2">Repo vacío clonado por SSH en Eclipse (perspectiva Git)</label>
+              <input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label" for="c2">PyDev instalado</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c3"><label class="form-check-label" for="c3">Proyecto Java creado dentro del repo</label>
+              <input class="form-check-input" type="checkbox" id="c3"><label class="form-check-label" for="c3">Intérprete configurado</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c4"><label class="form-check-label" for="c4">Commit y push desde Eclipse</label>
+              <input class="form-check-input" type="checkbox" id="c4"><label class="form-check-label" for="c4">Programa de prueba ejecutado</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c5"><label class="form-check-label" for="c5">Práctica B: cambio en web y pull en Eclipse</label>
+              <input class="form-check-input" type="checkbox" id="c5"><label class="form-check-label" for="c5">Copilot4Eclipse funcionando</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c6"><label class="form-check-label" for="c6">5 mini-prácticas completadas</label>
             </div>
             <div class="progress progress-slim mt-2">
               <div class="progress-bar" id="bar" style="width:0%"></div>
             </div>
-            <p class="small text-secondary mt-2 mb-0" id="hint">0% completado</p>
+            <p class="hint mt-2 mb-0" id="hint">0% completado</p>
           </div>
         </div>
       </div>
