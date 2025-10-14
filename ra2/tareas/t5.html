@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DAW1 · Práctica 5 · XAMPP + PHP básico + Eclipse (PDT)</title>
-  <meta name="description" content="Instala XAMPP, configura Eclipse con el plugin PHP (PDT) y realiza ejercicios básicos sobre variables, operadores y estructuras simples.">
+  <title>DAW1 · Práctica 5 · XAMPP en VM + PHP básico + Eclipse PHP</title>
+  <meta name="description" content="Crea una VM, instala un SO, instala XAMPP, verifica Apache/PHP/MySQL, configura Eclipse para PHP en Linux y realiza 5 mini-prácticas básicas.">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .kbd{background:#111;border:1px solid #333;border-radius:.3rem;padding:.1rem .35rem;font-family:ui-monospace,Consolas,monospace}
@@ -12,34 +12,218 @@
     .progress-slim{height:.6rem}
     .sticky-top-blur{backdrop-filter:saturate(180%) blur(6px); background:rgba(0,0,0,.6)}
     .hint{color:#9aa4b2;font-size:.9rem}
+    .ext a{text-decoration:underline}
   </style>
 </head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top sticky-top-blur border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">DAW1 · Práctica 5</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Alternar navegación">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto small">
+          <li class="nav-item"><a class="nav-link" href="#objetivo">Objetivo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#requisitos">Requisitos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#xampp">Instalar XAMPP</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicios">Servicios y verificación</a></li>
+          <li class="nav-item"><a class="nav-link" href="#eclipse">Eclipse para PHP</a></li>
+          <li class="nav-item"><a class="nav-link" href="#practicas">5 mini-prácticas PHP</a></li>
+          <li class="nav-item"><a class="nav-link" href="#entrega">Entrega</a></li>
+          <li class="nav-item"><a class="nav-link" href="#rubrica">Rúbrica</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <main class="container py-4">
+
+    <!-- Objetivo -->
     <section id="objetivo" class="mb-4">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
           <span class="badge text-bg-primary mb-2">Entornos de Desarrollo · DAW1</span>
-          <h1 class="h4 mb-2">🎯 Objetivo</h1>
-          <p class="mb-0">Instalar <strong>XAMPP</strong> (Apache + PHP + MySQL/MariaDB) <strong>en tu equipo</strong>, verificar <strong>phpinfo()</strong> y configurar <strong>Eclipse</strong> con el <strong>plugin PHP (PDT)</strong>. Realizar ejercicios básicos para comprender variables, operadores y estructuras simples en PHP.</p>
+          <h1 class=\"h4 mb-2\">🎯 Objetivo</h1>
+          <p class=\"mb-0\">Instalar y poner en marcha <strong>XAMPP</strong> (Apache + PHP + MySQL/MariaDB) <strong>en tu equipo</strong> (sin máquina virtual), verificar <strong>phpinfo()</strong> y configurar <strong>Eclipse con el plugin PHP (PDT)</strong> en Linux con permisos adecuados. Completar <strong>5 mini-prácticas</strong> para afianzar PHP básico.</p>
         </div>
       </div>
     </section>
 
-    <section id="requisitos" class="mb-4">
+    <!-- Requisitos -->
+    <section id=\"requisitos\" class=\"mb-4\">
+      <div class=\"card border-0 shadow-sm\">
+        <div class=\"card-body\">
+          <h2 class=\"h5 mb-3\">✅ Requisitos previos</h2>
+          <ul class=\"mb-2\">
+            <li><strong>Windows o Linux</strong> instalado en tu equipo.</li>
+            <li><strong>XAMPP</strong> para tu sistema (descarga oficial).</li>
+            <li><strong>Eclipse</strong> (idealmente Eclipse IDE for PHP Developers) o Eclipse estándar con el <strong>plugin PHP (PDT)</strong>.</li>
+            <li><strong>Cuenta de GitHub</strong> operativa.</li>
+          </ul>
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- Crear VM + SO -->
+    
+    <!-- Instalar XAMPP -->
+    <section id="xampp" class="mb-4">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <h2 class="h5 mb-3">✅ Requisitos previos</h2>
-          <ul>
-            <li>Instalar <a href="https://www.apachefriends.org/es/download.html" target="_blank" rel="noopener">XAMPP</a> según tu sistema operativo.</li>
-            <li>Instalar Eclipse de escritorio y el <a href="https://www.eclipse.org/pdt/" target="_blank" rel="noopener">plugin PHP (PDT)</a>.</li>
-            <li>Verificar que Apache y PHP funcionan accediendo a <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a>.</li>
-          </ul>
+          <h2 class="h5 mb-3">📦 Instalar XAMPP</h2>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Linux</h3>
+                <ol class="mb-2">
+                  <li>Descarga XAMPP para Linux desde el <a href="https://www.apachefriends.org/es/download.html" target="_blank" rel="noopener">sitio oficial de XAMPP (Apache Friends)</a>.</li>
+                  <li>Marca ejecutable e instala:
+<pre class="code">chmod +x ~/Descargas/xampp-linux-x64-*.run
+sudo ~/Descargas/xampp-linux-x64-*.run</pre>
+                  </li>
+                  <li>Inicia/para el stack:
+<pre class="code">sudo /opt/lampp/lampp start
+sudo /opt/lampp/lampp stop</pre>
+                  </li>
+                  <li>Panel gráfico (opcional):
+<pre class="code">sudo /opt/lampp/manager-linux-x64.run</pre>
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Windows</h3>
+                <ol class="mb-2">
+                  <li>Descarga el <em>installer</em> de XAMPP para Windows desde el <a href="https://www.apachefriends.org/es/download.html" target="_blank" rel="noopener">sitio oficial de XAMPP</a>.</li>
+                  <li>Ejecuta como admin → selecciona <strong>Apache</strong>, <strong>MySQL</strong>, <strong>PHP</strong>.</li>
+                  <li>Abre <strong>XAMPP Control Panel</strong> y verifica módulos.</li>
+                </ol>
+                <p class="hint mb-0">Si un puerto está ocupado (p.ej., 80/443/3306), libera el servicio o cambia el puerto en <code>httpd.conf</code>/<code>my.ini</code>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class=\"mt-3\">
+            <h3 class=\"h6\">🛡️ Nota de seguridad</h3>
+            <p class=\"mb-0 hint\">XAMPP es para <strong>desarrollo local</strong>. No expongas tu servidor a Internet ni habilites accesos remotos. Mantén el firewall activo.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="practicas" class="mb-4">
+    <!-- Servicios y verificación -->
+    <section id="servicios" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">🚦 Servicios y verificación (Apache + MySQL + PHP)</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Iniciar servicios</h3>
+                <ul class="mb-2">
+                  <li><strong>Linux</strong>: <span class="kbd">sudo /opt/lampp/lampp start</span></li>
+                  <li><strong>Windows</strong>: en <em>XAMPP Control Panel</em> pulsa <em>Start</em> en Apache y MySQL.</li>
+                </ul>
+                <p class="hint mb-0">MySQL en XAMPP suele ser <em>MariaDB</em>. Lo llamaremos MySQL/MariaDB.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Crear <code>info.php</code></h3>
+                <ol class="mb-2">
+                  <li>Ruta Linux: <code>/opt/lampp/htdocs/info.php</code> · Windows: <code>C:\\xampp\\htdocs\\info.php</code></li>
+                  <li>Contenido:
+<pre class="code">&lt;?php
+phpinfo();
+?&gt;</pre>
+                  </li>
+                  <li>Navega a: <a href="http://localhost/info.php" target="_blank" rel="noopener">http://localhost/info.php</a></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-1">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">phpMyAdmin (opcional)</h3>
+                <p class="mb-2">Accede a <a href="http://localhost/phpmyadmin" target="_blank" rel="noopener">/phpmyadmin</a> y crea una BD de pruebas.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 h-100">
+                <h3 class="h6">Problemas típicos</h3>
+                <ul class="mb-0 small">
+                  <li>Puerto 80/443 ocupado → para IIS/Apache del host o cambia puerto.</li>
+                  <li>Permisos en <code>/opt/lampp/htdocs</code> (Linux) → ver sección Eclipse.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Eclipse PHP -->
+    <section id=\"eclipse\" class=\"mb-4\">
+      <div class=\"card border-0 shadow-sm\">
+        <div class=\"card-body\">
+          <h2 class=\"h5 mb-3\">🧩 Configurar Eclipse IDE para PHP (Linux)</h2>
+          <div class=\"row g-3\">
+            <div class=\"col-md-6\">
+              <div class=\"p-3 border rounded-3 h-100\">
+                <h3 class=\"h6\">Instalar Eclipse o el <em>plugin PHP (PDT)</em></h3>
+                <ol class=\"mb-2\">
+                  <li><strong>Opción A (recomendada):</strong> descarga <strong>Eclipse IDE for PHP Developers</strong> (trae PDT ya incluido).</li>
+                  <li><strong>Opción B (si tienes Eclipse estándar):</strong> <span class="kbd">Help → Eclipse Marketplace…</span> → busca <strong>PHP</strong> o <strong>PDT</strong> → instala <em>Eclipse PHP Development Tools (PDT)</em> → reinicia.</li>
+                </ol>
+                <p class=\"hint mb-0\">Si el Marketplace no abre por cortafuegos, usa <span class=\"kbd\">Help → Install New Software…</span> con el repositorio de Eclipse y marca PDT.</p>
+              </div>
+            </div>
+            <div class=\"col-md-6\">
+              <div class=\"p-3 border rounded-3 h-100\">
+                <h3 class=\"h6\">Permisos sobre <code>htdocs</code></h3>
+                <p class=\"mb-2\">Crea la carpeta del proyecto y da permisos para desarrollar sin <code>sudo</code>:</p>
+<pre class=\"code\">sudo mkdir -p /opt/lampp/htdocs/ejercicios_basicos_php_endes
+sudo chown -R $USER:$USER /opt/lampp/htdocs/ejercicios_basicos_php_endes
+sudo chmod -R 775 /opt/lampp/htdocs/ejercicios_basicos_php_endes</pre>
+                <p class=\"hint mb-0\">Si usas otra ruta, adapta los comandos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class=\"mt-3\">
+            <h3 class=\"h6\">Importar el proyecto en Eclipse</h3>
+            <ol class=\"mb-2\">
+              <li><span class=\"kbd\">File → Open Projects from File System…</span></li>
+              <li>En <em>Directory</em>, selecciona <code>/opt/lampp/htdocs/ejercicios_basicos_php_endes</code>.</li>
+              <li>Pulsa <em>Finish</em>. Crea dentro un archivo <code>index.php</code>.</li>
+            </ol>
+          </div>
+
+          <div class="mt-3">
+            <h3 class="h6">Probar <code>index.php</code></h3>
+<pre class="code">&lt;!doctype html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;title&gt;Prueba PHP&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hola desde PHP 👋&lt;/h1&gt;
+  &lt;p&gt;Versión de PHP: &lt;?= phpversion(); ?&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+            <p class="mb-0">Abre <a href="http://localhost/ejercicios_basicos_php_endes/" target="_blank" rel="noopener">http://localhost/ejercicios_basicos_php_endes/</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 mini-prácticas PHP -->
+        <section id="practicas" class="mb-4">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
           <h2 class="h5 mb-3">🧩 Ejercicios básicos de PHP</h2>
@@ -112,6 +296,141 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
     </section>
+    <!-- Entrega -->
+    <section id="entrega" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">📤 Entrega (Moodle)</h2>
+          <ol class="mb-0">
+            <li>PDF con capturas de:
+              <ul>
+                <li>Panel de control de XAMPP con <strong>Apache</strong> y <strong>MySQL</strong> en ejecución.</li>
+                <li>Resultado de <code><a href="http://localhost/info.php" target="_blank" rel="noopener">http://localhost/info.php</a></code> mostrando <strong>phpinfo()</strong>.</li>
+                <li>Eclipse con <strong>PDT</strong> instalado (captura de <em>Help → About → Installation Details</em> o Marketplace) y proyecto importado.</li>
+                <li>Salida en el navegador de al menos 2 mini-prácticas.</li>
+              </ul>
+            </li>
+            <li>Breve descripción de los pasos realizados y problemas encontrados + cómo los solucionaste.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rúbrica -->
+    <section id="rubrica" class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">📏 Rúbrica (10 puntos)</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead class="table-dark">
+                <tr><th>Criterio</th><th>Descripción</th><th class="text-end">Puntos</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>XAMPP instalado</td><td>Paquete instalado en el equipo y actualizado</td><td class=\"text-end\">2</td></tr>
+                <tr><td>XAMPP operativo</td><td>Servicios Apache y MySQL iniciados sin errores</td><td class="text-end">2</td></tr>
+                <tr><td>PHP verificado</td><td><code>info.php</code> funciona (phpinfo)</td><td class="text-end">2</td></tr>
+                <tr><td>Eclipse PHP</td><td>IDE instalado, permisos y proyecto importado</td><td class="text-end">2</td></tr>
+                <tr><td>5 mini-prácticas</td><td>Funcionan y muestran salida correcta</td><td class="text-end">2</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint mt-2 mb-0">Extra (≤ +0,5): añade pruebas con <code>assert</code> a cada función y capturas claras.</p>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- FAQ -->
+    <section id="faq" class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">❓ FAQ / Ayuda rápida</h2>
+          <div class="accordion" id="faqAcc">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f1">No carga <code>http://localhost</code></button>
+              </h2>
+              <div id="f1" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                <div class="accordion-body small">
+                  Asegúrate de que Apache está en marcha. En Linux: <code>sudo /opt/lampp/lampp start</code>. Comprueba puertos 80/443 libres.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f2">Error de permisos en <code>htdocs</code></button>
+              </h2>
+              <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                <div class="accordion-body small">
+                  Ejecuta los comandos de permisos de la sección Eclipse y vuelve a importar el proyecto en Eclipse.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f3">MySQL no arranca</button>
+              </h2>
+              <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                <div class="accordion-body small">
+                  Puede haber otro MySQL en el host. Para el servicio externo o cambia el puerto en la configuración de XAMPP.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Checklist -->
+          <div class="mt-4">
+            <h3 class="h6">Checklist</h3>
+            
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label" for="c2">XAMPP instalado</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c3"><label class="form-check-label" for="c3">Apache + MySQL en ejecución</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c4"><label class="form-check-label" for="c4">phpinfo() funcionando</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c5"><label class="form-check-label" for="c5">Eclipse PHP configurado</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="c6"><label class="form-check-label" for="c6">5 mini-prácticas completadas</label>
+            </div>
+            <div class="progress progress-slim mt-2">
+              <div class="progress-bar" id="bar" style="width:0%"></div>
+            </div>
+            <p class="hint mt-2 mb-0" id="hint">0% completado</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <footer class="border-top py-3">
+    <div class="container small text-secondary">
+      © Entornos de Desarrollo · DAW1 — Práctica 5. Hecho con ❤️ para aprender mejor.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Checklist → progreso
+    (function(){
+      const boxes = document.querySelectorAll('.form-check-input');
+      const bar = document.getElementById('bar');
+      const hint = document.getElementById('hint');
+      function update(){
+        const done = [...boxes].filter(b=>b.checked).length;
+        const pct = Math.round((done / boxes.length) * 100);
+        bar.style.width = pct + '%';
+        hint.textContent = pct + '% completado';
+      }
+      boxes.forEach(b => b.addEventListener('change', update));
+      update();
+    })();
+  </script>
 </body>
 </html>
