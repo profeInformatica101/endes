@@ -1,380 +1,441 @@
 <!doctype html>
-<html lang="es" data-bs-theme="dark">
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DAW1 · Práctica 5 · SSH + Eclipse: repo vacío → Java → commit/push → pull</title>
-  <meta name="description" content="Configura claves SSH, importa un repositorio vacío en Eclipse, crea un proyecto Java dentro, comitea y sube los cambios. Además: modifica desde la web de GitHub y haz pull en Eclipse.">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAW1 · Práctica 6 · Ejecución de Código en Múltiples Entornos de Desarrollo (sin Eclipse)</title>
+  <meta name="description" content="Práctica 6: Ejecutar un programa Java simple en varios IDEs actuales (sin Eclipse), comparar instalación, ejecución, depuración y experiencia de uso." />
   <style>
-    .kbd{background:#111;border:1px solid #333;border-radius:.3rem;padding:.1rem .35rem;font-family:ui-monospace,Consolas,monospace}
-    .code{background:#0d1117;border:1px solid #30363d;border-radius:.5rem;padding:.75rem;font-family:ui-monospace,Consolas,monospace;white-space:pre;display:block}
-    .progress-slim{height:.6rem}
-    .sticky-top-blur{backdrop-filter:saturate(180%) blur(6px); background:rgba(0,0,0,.6)}
-    a.link-light{ text-decoration: underline; }
+    :root{
+      --bg:#0b0c10; --card:#161b22; --text:#f0f6fc; --muted:#c9d1d9;
+      --brand:#58a6ff; --accent:#3fb950; --warn:#d29922; --danger:#f85149;
+      --border:#30363d; --link:#58a6ff;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1000px;margin-inline:auto;padding:24px}
+    header{position:sticky;top:0;backdrop-filter:saturate(180%) blur(8px);background:rgba(11,12,16,.9);border-bottom:1px solid var(--border);z-index:5}
+    header .inner{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:12px 24px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand .logo{width:36px;height:36px;border-radius:9px;background:conic-gradient(from 90deg, var(--brand), #7c3aed, #22c55e);box-shadow:0 0 0 3px rgba(76,201,240,.15)}
+    h1{font-size: clamp(1.2rem, 2.2vw + .8rem, 1.8rem); margin:0}
+    .subtitle{font-size:.95rem;color:var(--muted)}
+    nav{display:flex;flex-wrap:wrap;gap:8px}
+    nav a{color:var(--text);text-decoration:none;font-size:.95rem;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.05)}
+    nav a:hover{border-color:var(--brand)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+    .grid{display:grid;gap:16px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:900px){.grid.two,.grid.three{grid-template-columns:1fr}}
+    h2{margin:.2rem 0 0.8rem;font-size:1.2rem}
+    h3{margin:1rem 0 .5rem;font-size:1.05rem}
+    p,li{color:var(--muted);line-height:1.6}
+    code, pre{background:#0d1117;border:1px solid var(--border);border-radius:10px;color:var(--text)}
+    code{padding:.15rem .4rem}
+    pre{padding:12px;overflow:auto}
+    .badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-size:.85rem;background:rgba(255,255,255,.05)}
+    .brandc{color:var(--brand)} .ok{color:var(--accent)} .warn{color:var(--warn)} .danger{color:var(--danger)}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.08);color:var(--text);padding:10px 14px;border-radius:12px;font-weight:600}
+    .btn:hover{border-color:var(--brand)}
+    details{border:1px dashed var(--border);border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.05)}
+    details summary{cursor:pointer;font-weight:700;margin-bottom:6px}
+    .steps{counter-reset: step}
+    .step{position:relative;padding-left:56px;margin:16px 0}
+    .step::before{counter-increment: step;content: counter(step);position:absolute;left:0;top:0;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg, var(--brand), #7c3aed);color:#fff;}
+    .checklist label{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--border);border-radius:12px;margin:8px 0;background:rgba(255,255,255,.05)}
+    .checklist input{transform:scale(1.2);margin-top:3px}
+    .progress{height:10px;width:100%;background:#0d1117;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+    .progress>i{display:block;height:100%;width:0%;background:linear-gradient(90deg, var(--accent), var(--brand));transition:width .3s ease}
+    table{width:100%;border-collapse:collapse}
+    th,td{border:1px solid var(--border);padding:10px;text-align:left}
+    th{background:rgba(255,255,255,.08)}
+    .hint{font-size:.9rem;color:var(--muted)}
+    .repo{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:10px}
+    footer{margin:32px 0 16px;text-align:center;color:var(--muted)}
+    @media print{
+      header,.toolbar,nav{display:none !important}
+      body{background:#fff;color:#000}
+      .card{border-color:#ccc;box-shadow:none}
+      code, pre{background:#f7f7f7;border-color:#ddd;color:#111}
+    }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top sticky-top-blur border-bottom">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">DAW1 · Práctica 4</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Alternar navegación">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div id="nav" class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto small">
-          <li class="nav-item"><a class="nav-link" href="#objetivo">Objetivo</a></li>
-          <li class="nav-item"><a class="nav-link" href="#requisitos">Requisitos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#pasos">Pasos (Eclipse + SSH)</a></li>
-          <li class="nav-item"><a class="nav-link" href="#codigo">Código Java</a></li>
-          <li class="nav-item"><a class="nav-link" href="#practicaB">Práctica B: cambio web + pull</a></li>
-          <li class="nav-item"><a class="nav-link" href="#entrega">Entrega</a></li>
-          <li class="nav-item"><a class="nav-link" href="#rubrica">Rúbrica</a></li>
-          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+  <header>
+    <div class="inner wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>DAW1 · Entornos de Desarrollo — <strong>Práctica 6</strong></h1>
+          <div class="subtitle">Ejecución de Código en Múltiples Entornos de Desarrollo (sin Eclipse)</div>
+        </div>
+      </div>
+      <nav aria-label="Secciones de la práctica">
+        <a href="#objetivo">Objetivo</a>
+        <a href="#requisitos">Requisitos</a>
+        <a href="#ides">IDEs</a>
+        <a href="#pasos">Pasos por IDE</a>
+        <a href="#comparativa">Comparativa</a>
+        <a href="#entrega">Entrega</a>
+        <a href="#rubrica">Rúbrica</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap grid" style="margin-top:16px">
+
+    <section id="objetivo" class="card">
+      <div class="toolbar" style="justify-content:space-between; align-items:center">
+        <span class="badge brandc">DAW1 · Entornos de Desarrollo</span>
+        <div class="toolbar">
+          <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        </div>
+      </div>
+      <h2>🎯 Objetivo</h2>
+      <p>Instalar y probar un sencillo programa Java en varios <strong>IDEs modernos</strong> (excluyendo Eclipse), observando diferencias en instalación, configuración, ejecución, depuración y UX. Finaliza con una <strong>comparativa crítica</strong>.</p>
+      <div class="grid three">
+        <div class="card">
+          <h3>Competencias</h3>
+          <ul>
+            <li>Instalación y configuración básica de IDEs.</li>
+            <li>Ejecución y depuración de proyectos Java simples.</li>
+            <li>Análisis comparado de herramientas de desarrollo.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Resultados de aprendizaje</h3>
+          <ul>
+            <li>Configura entornos de desarrollo según requisitos del proyecto.</li>
+            <li>Integra herramientas (autocompletado, refactor, depuración).</li>
+            <li>Documenta y argumenta una elección de IDE.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Tiempo estimado</h3>
+          <p>90–120 minutos.</p>
+          <p class="hint">Puedes repartirlo en dos sesiones.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="requisitos" class="card">
+      <h2>✅ Requisitos previos</h2>
+      <ul>
+        <li>SO: Windows, Linux o macOS.</li>
+        <li>Permisos de instalación.</li>
+        <li>Cuenta en GitHub activa (para Codespaces, opcional).</li>
+        <li>JDK reciente instalado (o permitir que el IDE lo descargue automáticamente).</li>
+      </ul>
+      <details>
+        <summary>Código base (HelloWorld)</summary>
+        <pre><code>public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+  }
+}</code></pre>
+      </details>
+    </section>
+
+
+    <section id="ides" class="card">
+      <h2>🧰 IDEs incluidos en la práctica</h2>
+      <table>
+        <thead>
+          <tr><th>IDE</th><th>Tipo de licencia</th><th>Descripción breve</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>NetBeans</strong></td>
+            <td>Libre</td>
+            <td>Desarrollado por Apache; integración directa con Java SE, EE, PHP y Maven.</td>
+          </tr>
+          <tr>
+            <td><strong>IntelliJ IDEA</strong></td>
+            <td>Propietario (versión Community libre)</td>
+            <td>De JetBrains; excelente autocompletado, refactorización y depuración avanzada.</td>
+          </tr>
+          <tr>
+            <td><strong>Visual Studio Code</strong></td>
+            <td>Libre</td>
+            <td>De Microsoft; extensible, rápido y con soporte para Java mediante plugins.</td>
+          </tr>
+          <tr>
+            <td><strong>JetBrains WebStorm</strong></td>
+            <td>Propietario</td>
+            <td>Enfocado al desarrollo web moderno (JavaScript, Node.js, HTML/CSS), también puede ejecutar Java con plugins.</td>
+          </tr>
+          <tr>
+            <td><strong>Atom</strong></td>
+            <td>Libre</td>
+            <td>Editor modular de GitHub; puede configurarse para Java mediante paquetes.</td>
+          </tr>
+          <tr>
+            <td><strong>KDevelop</strong></td>
+            <td>Libre</td>
+            <td>IDE de KDE, con soporte para C/C++, Python y Java, multiplataforma y ligero.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hint">Elige al menos <strong>tres IDEs</strong> distintos para comparar. Al menos uno de licencia propietario</p>
+    </section>
+
+    <section id="descargas" class="card">
+      <h2>⬇️ Enlaces oficiales de descarga</h2>
+      <ul>
+        <li>🧱 <a href="https://netbeans.apache.org/download/" target="_blank"><strong>NetBeans</strong></a> — Página oficial de Apache NetBeans.</li>
+        <li>💡 <a href="https://www.jetbrains.com/idea/download/" target="_blank"><strong>IntelliJ IDEA</strong></a> — JetBrains, versiones Community y Ultimate.</li>
+        <li>🪶 <a href="https://code.visualstudio.com/download" target="_blank"><strong>Visual Studio Code</strong></a> — Descarga para Windows, Linux y macOS.</li>
+        <li>🌐 <a href="https://www.jetbrains.com/webstorm/download/" target="_blank"><strong>JetBrains WebStorm</strong></a> — IDE web completo, requiere licencia o prueba gratuita.</li>
+        <li>⚙️ <a href="https://github.com/atom/atom/releases/latest" target="_blank"><strong>Atom</strong></a> — Última versión disponible desde GitHub (no se actualiza oficialmente).</li>
+        <li>🐧 <a href="https://www.kdevelop.org/download" target="_blank"><strong>KDevelop</strong></a> — Proyecto oficial de KDE, disponible para Linux, Windows y macOS.</li>
+      </ul>
+      <p class="hint">Instala también un <strong>JDK</strong> (Java Development Kit) si el IDE no lo incluye automáticamente.</p>
+    </section>
+    <section id="pasos" class="card">
+      <h2>🛠️ Pasos por IDE</h2>
+     <ol class="steps">
+  <li class="step">
+    <h3>IntelliJ IDEA Community</h3>
+    <ul>
+      <li>Instala y abre IntelliJ → <strong>New Project</strong> → <em>Language: Java</em> (SDK: selecciona o descarga).</li>
+      <li>Crea una clase <code>HelloWorld</code> en <code>src</code> con el código base.</li>
+      <li>Ejecuta con el icono ▶️ o clic derecho → <em>Run 'HelloWorld.main()'</em>.</li>
+      <li><em>Depura:</em> breakpoint en <code>println</code> → ▶️ <strong>Debug</strong> → Step Over, Variables.</li>
+    </ul>
+  </li>
+
+  <li class="step">
+    <h3>Apache NetBeans</h3>
+    <ul>
+      <li>Instala NetBeans → <strong>File → New Project…</strong> → <em>Java with Ant/Gradle/Maven → Java Application</em>.</li>
+      <li>Desmarca <em>Create Main Class</em> si prefieres crearla a mano. Añade <code>HelloWorld</code> en <code>Source Packages</code>.</li>
+      <li>Run (▶️) y verifica la consola.</li>
+      <li><em>Depura:</em> breakpoint + <strong>Debug Project</strong>.</li>
+    </ul>
+  </li>
+
+  <li class="step">
+    <h3>Visual Studio Code (+ Extension Pack for Java)</h3>
+    <ul>
+      <li>Instala VS Code y el <em>Extension Pack for Java</em>.</li>
+      <li>Abre una carpeta → crea <code>src/HelloWorld.java</code> → acepta crear proyecto Java.</li>
+      <li>Ejecuta con el botón <em>Run</em> sobre <code>main</code> o desde “Run and Debug”.</li>
+      <li><em>Depura:</em> breakpoint + <strong>Run and Debug</strong> → Java.</li>
+    </ul>
+  </li>
+
+  <li class="step">
+    <h3>JetBrains WebStorm</h3>
+    <ul>
+      <li>Instala WebStorm (orientado a JS). Para Java, añade el plugin <strong>“IDEA Community Edition Keymap”</strong> y usa una <strong>configuración de ejecución por terminal</strong> o un <code>npm</code> script que compile/ejecute con <code>javac/java</code>.</li>
+      <li>En el proyecto, crea <code>src/HelloWorld.java</code>. Compila en la terminal integrada:
+        <pre><code>javac src/HelloWorld.java && java -cp src HelloWorld</code></pre>
+      </li>
+      <li><em>Depuración (alternativa):</em> usa VS Code/IntelliJ para depurar; en WebStorm céntrate en edición/terminal.</li>
+    </ul>
+  </li>
+
+  <li class="step">
+    <h3>Atom</h3>
+    <ul>
+      <li>Instala Atom (última release). Añade paquetes comunitarios como <strong>language-java</strong> (resaltado) y <strong>script</strong> (ejecución básica), si están disponibles para tu plataforma.</li>
+      <li>Abre carpeta → crea <code>HelloWorld.java</code>. Compila y ejecuta desde la terminal integrada:
+        <pre><code>javac HelloWorld.java && java HelloWorld</code></pre>
+      </li>
+      <li><em>Nota:</em> Atom está discontinuado; no esperes autocompletado/refactor Java avanzados.</li>
+    </ul>
+  </li>
+
+  <li class="step">
+    <h3>KDevelop</h3>
+    <ul>
+      <li>Instala KDevelop. Crea un proyecto simple (o abre una carpeta existente).</li>
+      <li>Añade <code>HelloWorld.java</code>. Compila/ejecuta desde la terminal o configura una <em>Custom Build Step</em> con:
+        <pre><code>javac HelloWorld.java && java HelloWorld</code></pre>
+      </li>
+      <li><em>Depuración Java:</em> limitada. Úsalo como editor + terminal para este ejercicio.</li>
+    </ul>
+  </li>
+</ol>
+      <div class="card">
+        <h3>Qué debes capturar (por IDE)</h3>
+        <ul>
+          <li>Pantalla de creación del proyecto y/o detección del JDK.</li>
+          <li>Estructura del proyecto con <code>HelloWorld.java</code>.</li>
+          <li>Ejecución del programa (consola mostrando <em>Hello, World!</em>).</li>
+          <li>Depuración con breakpoint (captura del panel de variables).</li>
         </ul>
       </div>
-    </div>
-  </nav>
 
-  <main class="container py-4">
-
-    <!-- Objetivo -->
-    <section id="objetivo" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <span class="badge text-bg-primary mb-2">Entornos de Desarrollo · DAW1</span>
-          <h1 class="h4 mb-2">🎯 Objetivo</h1>
-          <p class="mb-0">Trabajar con <strong>SSH en GitHub</strong> y <strong>Eclipse (EGit)</strong>: importar un <strong>repositorio vacío por SSH</strong>, crear un <strong>proyecto Java</strong> dentro, probar el código, y <strong>comitear/subir</strong> los cambios desde Eclipse. Además, realizar una modificación en la <strong>web de GitHub</strong> y hacer <strong>pull</strong> en Eclipse.</p>
-        </div>
-      </div>
     </section>
+    <section id="comparativa" class="card">
+      <h2>📊 Comparativa y evaluación</h2>
+      <p>Rellena la tabla con una puntuación del 1 (muy pobre) al 5 (excelente) y añade comentarios breves.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>IntelliJ</th>
+            <th>NetBeans</th>
+            <th>VS Code</th>
+            <th>Fleet</th>
+            <th>Codespaces</th>
+            <th>Comentarios</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Instalación y setup JDK</td><td></td><td></td><td></td><td></td><td></td><td>¿Autodetecta/instala JDK?</td>
+          </tr>
+          <tr>
+            <td>Interfaz y UX</td><td></td><td></td><td></td><td></td><td></td><td>Navegación, buscador de acciones</td>
+          </tr>
+          <tr>
+            <td>Soporte Java (editor)</td><td></td><td></td><td></td><td></td><td></td><td>Autocomplete, refactor, hints</td>
+          </tr>
+          <tr>
+            <td>Depuración</td><td></td><td></td><td></td><td></td><td></td><td>Breakpoints, variables, evaluate</td>
+          </tr>
+          <tr>
+            <td>Rendimiento</td><td></td><td></td><td></td><td></td><td></td><td>Arranque, consumo, primera ejecución</td>
+          </tr>
+          <tr>
+            <td>Personalización</td><td></td><td></td><td></td><td></td><td></td><td>Temas, atajos, plugins</td>
+          </tr>
+          <tr>
+            <td>Docs y comunidad</td><td></td><td></td><td></td><td></td><td></td><td>Tutoriales, foros, ejemplos</td>
+          </tr>
+          <tr>
+            <td>Extras</td><td></td><td></td><td></td><td></td><td></td><td>IA, integración cloud, contenedores</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hint">Cierra con 6–8 líneas justificando <strong>qué IDE elegirías</strong> para Java en este curso y por qué.</p>
+    </section>
+   
 
-    <!-- Requisitos -->
-    <section id="requisitos" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">✅ Requisitos previos</h2>
-          <ul class="mb-2">
-            <li>Cuenta en <strong>GitHub</strong>.</li>
-            <li><strong>Eclipse</strong> con EGit (viene por defecto en distribuciones recientes).</li>
-            <li><strong>Claves SSH</strong> configuradas en tu máquina y añadidas a GitHub.</li>
+    <section id="entrega" class="card">
+      <h2>📤 Entrega (Moodle)</h2>
+      <ol>
+        <li>Sube un <strong>PDF</strong> con:
+          <ul>
+            <li>Capturas de cada IDE (creación, estructura, ejecución, depuración).</li>
+            <li>Tabla comparativa completa.</li>
+            <li>Reflexión final (6–8 líneas) con tu elección de IDE.</li>
           </ul>
+        </li>
+        <li>Incluye <strong>ficha técnica</strong>: versión de cada IDE, versión del JDK, SO y RAM.</li>
+      </ol>
+      <details>
+        <summary>Plantilla mínima sugerida</summary>
+        <pre><code># Práctica 6 · Ejecución de Código en Múltiples Entornos de Desarrollo
 
-          <h3 class="h6 mt-3">1) Generar y registrar claves SSH</h3>
-          <p class="small mb-2">Recomendado: <strong>ed25519</strong>. En <em>Git Bash</em> (Windows), Terminal (macOS/Linux):</p>
-          <pre class="code">ssh-keygen -t ed25519 -C "tu-email@example.com"
-# Pulsa Enter para aceptar la ruta (~/.ssh/id_ed25519) y, opcionalmente, pon passphrase.
+## 1. IntelliJ IDEA
+(Capturas + notas)
 
-# Inicia el agente SSH y añade la clave:
-# macOS / Linux
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
+## 2. NetBeans
+(Capturas + notas)
 
-# Windows (Git Bash): el mismo comando suele funcionar
-# (Si falla, inicia "OpenSSH Authentication Agent" en Servicios y repite ssh-add)</pre>
-          <p class="small mb-2">Copia tu <strong>clave pública</strong> y súbela a GitHub: <em>Settings → SSH and GPG keys → New SSH key</em>.</p>
-          <pre class="code">cat ~/.ssh/id_ed25519.pub</pre>
+## 3. VS Code (+ Java)
+(Capturas + notas)
 
-          <h3 class="h6 mt-3">2) Crear repositorio vacío en GitHub</h3>
-          <ol class="mb-0">
-            <li>GitHub → <strong>New</strong> → nombre (p.ej., <code>daw1-practica4-ssh</code>), <em>vacío</em> (no añadas README ni .gitignore), <strong>Create repository</strong>.</li>
-            <li>Copia la URL <strong>SSH</strong>: <code>git@github.com:&lt;tu_usuario&gt;/daw1-practica4-ssh.git</code></li>
-          </ol>
-        </div>
-      </div>
+## 4. Fleet (y/o Codespaces)
+(Capturas + notas)
+
+## 5. Tabla comparativa
+(Completa)
+
+## 6. Reflexión final
+(Elección y motivos)
+</code></pre>
+      </details>
     </section>
 
-    <!-- Pasos SSH + Eclipse -->
-    <section id="pasos" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">🛠️ Pasos (Eclipse + SSH)</h2>
-
-          <div class="mb-4">
-            <h3 class="h6">A) Abrir la perspectiva Git en Eclipse</h3>
-            <ol>
-              <li><span class="kbd">Window → Perspective → Open Perspective → Other…</span></li>
-              <li>Selecciona <strong>Git</strong> y pulsa <strong>Open</strong>.</li>
-              <li>Se abrirán vistas como <em>Git Repositories</em>, <em>Git Staging</em>, etc.</li>
-            </ol>
-          </div>
-
-          <div class="mb-4">
-            <h3 class="h6">B) Clonar el repositorio vacío por SSH</h3>
-            <ol>
-              <li>En la perspectiva Git, en la vista <strong>Git Repositories</strong>, clic en <em>Clone a Git repository</em> (o botón <em>Clone</em>).</li>
-              <li>Elige <strong>Clone URI</strong> y pega la URI SSH: <code>git@github.com:&lt;tu_usuario&gt;/daw1-practica4-ssh.git</code>.</li>
-              <li>Autentícate con tu clave (si pide passphrase).</li>
-              <li>Selecciona la rama <code>main</code> (si no existe, Eclipse la creará al primer push).</li>
-              <li>Elige carpeta local de clonación y finaliza.</li>
-            </ol>
-            <p class="small text-secondary mb-0">El repo está vacío: aún no habrá proyecto en <em>Git Repositories → Working Tree</em>.</p>
-          </div>
-
-          <div class="mb-4">
-            <h3 class="h6">C) Crear <u>dentro del repo</u> un Proyecto Java</h3>
-            <ol>
-              <li>Cambia a perspectiva Java o mantenla actual.</li>
-              <li><span class="kbd">File → New → Java Project</span></li>
-              <li>Nombre: <code>hola-mundo</code> (o el que prefieras).</li>
-              <li><strong>Importante:</strong> desmarca <em>Use default location</em> y selecciona como ubicación la <strong>carpeta del repo clonado</strong>.</li>
-              <li>Finish. Eclipse creará <code>src/</code>, <code>.project</code>, <code>.classpath</code> dentro del repo.</li>
-              <li>Crea el paquete <code>app</code> y la clase <code>Main</code> (ver ejemplo abajo).</li>
-            </ol>
-          </div>
-
-          <div class="mb-4">
-            <h3 class="h6">D) Preparar .gitignore (recomendado)</h3>
-            <p class="mb-2">En la raíz del repo crea <code>.gitignore</code> (para no subir binarios/archivos de IDE):</p>
-            <pre class="code"># Eclipse & Java
-.classpath
-.project
-.settings/
-bin/
-target/
-
-# IDEs
-.idea/
-*.iml
-.vscode/
-
-# SO
-.DS_Store
-Thumbs.db</pre>
-          </div>
-
-          <div class="mb-4">
-            <h3 class="h6">E) Comitear y subir desde Eclipse (EGit)</h3>
-            <ol>
-              <li>Abre la vista <strong>Git Staging</strong> (si no la ves: <span class="kbd">Window → Show View → Other… → Git → Git Staging</span>).</li>
-              <li>En <em>Unstaged Changes</em> selecciona tus archivos (src/, .gitignore, etc.) y pulsa <strong>+</strong> para pasarlos a <em>Staged Changes</em>.</li>
-              <li>Escribe un mensaje, p.ej.: <code>feat: proyecto Java inicial</code>.</li>
-              <li>Pulsa <strong>Commit and Push</strong>. Revisa la URL SSH de <code>origin</code> y confirma.</li>
-            </ol>
-            <p class="small text-secondary mb-0">Verifica en GitHub que ya aparecen los archivos.</p>
-          </div>
-
-          <div>
-            <h3 class="h6">F) Ejecutar el proyecto</h3>
-            <ol>
-              <li>En el <em>Package Explorer</em>, clic derecho en <code>Main</code> → <span class="kbd">Run As → Java Application</span>.</li>
-              <li>Comprueba la salida en la consola de Eclipse.</li>
-            </ol>
-          </div>
-
-        </div>
-      </div>
+    <section id="rubrica" class="card">
+      <h2>📏 Rúbrica (10 puntos)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Descripción</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Instalación y ejecución (≥3 IDEs)</td>
+            <td>Proyectos creados, <code>HelloWorld</code> ejecutado y evidencias claras</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Depuración</td>
+            <td>Breakpoint y variables en al menos 2 IDEs (capturas)</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Tabla comparativa</td>
+            <td>Rellenada con criterio y comentarios útiles</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Reflexión</td>
+            <td>Conclusión argumentada y coherente</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Presentación</td>
+            <td>Claridad, orden y capturas legibles</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hint">Extra (≤ +0,5): medir tiempos de arranque/primera ejecución y graficarlos (o tabla con medias).</p>
     </section>
 
-    <!-- Código de ejemplo -->
-    <section id="codigo" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">💻 Código de ejemplo (Java)</h2>
-          <p class="mb-2">Paquete <code>app</code> con <code>Main</code> y <code>Calculator</code>. Guarda estos archivos en <code>src/</code>:</p>
-
-          <h3 class="h6">src/app/Main.java</h3>
-          <pre class="code">package app;
-
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hola, DAW1 👋");
-
-        Calculator calc = new Calculator();
-        int a = 7, b = 5;
-
-        System.out.printf("Suma %d + %d = %d%n", a, b, calc.add(a, b));
-        System.out.printf("Producto %d × %d = %d%n", a, b, calc.mul(a, b));
-
-        // Argumentos opcionales
-        if (args.length &gt; 0) {
-            System.out.println("Argumentos recibidos:");
-            for (int i = 0; i &lt; args.length; i++) {
-                System.out.printf("  [%d] %s%n", i, args[i]);
-            }
-        }
-    }
-}</pre>
-
-          <h3 class="h6 mt-3">src/app/Calculator.java</h3>
-          <pre class="code">package app;
-
-public class Calculator {
-    public int add(int a, int b) { return a + b; }
-    public int sub(int a, int b) { return a - b; }
-    public int mul(int a, int b) { return a * b; }
-
-    public int safeDiv(int a, int b) {
-        if (b == 0) throw new IllegalArgumentException("No se puede dividir por cero");
-        return a / b;
-    }
-}</pre>
-
-          <p class="small text-secondary mb-0">Ejecución: clic derecho sobre <code>Main</code> → <em>Run As → Java Application</em>.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Práctica B -->
-    <section id="practicaB" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">🧪 Práctica B — Modificar desde la web y hacer pull en Eclipse</h2>
-
-          <div class="mb-3">
-            <h3 class="h6">1) Cambio en la web de GitHub</h3>
-            <ol>
-              <li>Abre tu repo en GitHub (rama <code>main</code>).</li>
-              <li>Crea/edita un archivo (p.ej., <code>README.md</code>) usando el editor web. Escribe un texto (p.ej., “Proyecto Java con SSH”).</li>
-              <li>Haz <strong>Commit changes</strong> en <code>main</code>.</li>
-            </ol>
-          </div>
-
-          <div>
-            <h3 class="h6">2) Traer cambios a Eclipse (pull)</h3>
-            <ol>
-              <li>Vuelve a Eclipse, perspectiva Git.</li>
-              <li>En <strong>Git Repositories</strong>, clic derecho sobre tu repo → <strong>Pull</strong> (o <em>Fetch from Upstream</em> y luego <em>Pull</em>).</li>
-              <li>Abre el archivo modificado (p.ej., <code>README.md</code>) en tu <em>Working Tree</em> para verificar que llegó el cambio.</li>
-            </ol>
-            <p class="small text-secondary mb-0">Si hay conflictos, Eclipse mostrará el <em>Merge</em>; resuélvelos, guarda, comitea y vuelve a hacer <em>Push</em> si procede.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Entrega -->
-    <section id="entrega" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">📤 Entrega (Moodle)</h2>
-          <ol class="mb-0">
-            <li>Sube un <strong>PDF</strong> con:
-              <ul>
-                <li>Capturas de: clave SSH añadida en GitHub, repositorio vacío (URL SSH), clonación por SSH en Eclipse.</li>
-                <li>Creación del proyecto Java <em>dentro</em> del repo (captura de la ruta sin “default location”).</li>
-                <li>Ejecución de <code>Main</code> (consola) y vista de <em>Git Staging</em> con <em>Commit and Push</em>.</li>
-                <li>Página del repo mostrando los archivos subidos.</li>
-                <li>Práctica B: captura del cambio hecho en la web de GitHub y del <em>Pull</em> en Eclipse (archivo actualizado).</li>
-              </ul>
-            </li>
-            <li><strong>Reflexión (5–8 líneas):</strong> ventajas de SSH, cómo resolviste cualquier problema de autenticación o conflicto de merge.</li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- Rúbrica -->
-    <section id="rubrica" class="mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">📏 Rúbrica (10 puntos)</h2>
-          <div class="table-responsive">
-            <table class="table table-sm align-middle mb-0">
-              <thead class="table-dark">
-                <tr><th>Criterio</th><th>Descripción</th><th class="text-end">Puntos</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>SSH configurado</td><td>Claves generadas y registradas en GitHub</td><td class="text-end">2</td></tr>
-                <tr><td>Importación por SSH</td><td>Repo vacío clonado en Eclipse (Git perspective)</td><td class="text-end">2</td></tr>
-                <tr><td>Proyecto Java</td><td>Creado <em>dentro</em> del repo, compila y ejecuta</td><td class="text-end">3</td></tr>
-                <tr><td>Git (commit & push)</td><td>Commit y push correctos desde Eclipse (EGit)</td><td class="text-end">2</td></tr>
-                <tr><td>Práctica B (pull)</td><td>Cambio desde web y pull en Eclipse verificado</td><td class="text-end">1</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="small text-secondary mt-2 mb-0">Extra (≤ +0,5): mensajes de commit claros y/o creación de ramas para pruebas.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="mb-5">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">❓ FAQ / Ayuda rápida</h2>
-          <div class="accordion" id="faqAcc">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f1">“Permission denied (publickey)”</button>
-              </h2>
-              <div id="f1" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
-                <div class="accordion-body small">
-                  Asegúrate de que el <strong>agente SSH</strong> tiene añadida tu clave (<code>ssh-add -l</code>), que tu <strong>clave pública</strong> está en GitHub y que usas la <strong>URL SSH</strong> correcta del repo.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f2">No veo la perspectiva Git</button>
-              </h2>
-              <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
-                <div class="accordion-body small">
-                  <span class="kbd">Window → Perspective → Open Perspective → Other… → Git</span>. Si no aparece, instala el componente EGit desde <em>Eclipse Marketplace</em>.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f3">Conflictos al hacer pull</button>
-              </h2>
-              <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
-                <div class="accordion-body small">
-                  Eclipse abrirá la vista de <em>Merge</em>. Elige los cambios correctos, guarda, comitea el merge y, si procede, haz <em>Push</em>.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Checklist -->
-          <div class="mt-4">
-            <h3 class="h6">Checklist</h3>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label" for="c1">Claves SSH generadas y registradas en GitHub</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label" for="c2">Repo vacío clonado por SSH en Eclipse (perspectiva Git)</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c3"><label class="form-check-label" for="c3">Proyecto Java creado dentro del repo</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c4"><label class="form-check-label" for="c4">Commit y push desde Eclipse</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="c5"><label class="form-check-label" for="c5">Práctica B: cambio en web y pull en Eclipse</label>
-            </div>
-            <div class="progress progress-slim mt-2">
-              <div class="progress-bar" id="bar" style="width:0%"></div>
-            </div>
-            <p class="small text-secondary mt-2 mb-0" id="hint">0% completado</p>
-          </div>
-        </div>
-      </div>
+    <section id="faq" class="card">
+      <h2>❓ FAQ / Ayuda rápida</h2>
+      <details>
+        <summary>El IDE no detecta el JDK</summary>
+        <p>Instala un JDK reciente o deja que el IDE lo descargue. Revisa la ruta del SDK en la configuración del proyecto.</p>
+      </details>
+      <details>
+        <summary>VS Code no ejecuta Java</summary>
+        <p>Asegúrate de tener instalado el <em>Extension Pack for Java</em> y de abrir una carpeta/proyecto, no un archivo suelto.</p>
+      </details>
+      <details>
+        <summary>Fallo al depurar</summary>
+        <p>Recrea la configuración de ejecución/depuración y coloca el breakpoint en una línea ejecutable (no en la declaración de clase).</p>
+      </details>
+      <details>
+        <summary>¿Puedo usar Gradle o Maven?</summary>
+        <p>Sí. Con cualquiera de los IDEs puedes crear proyecto con Maven/Gradle. No es obligatorio para HelloWorld.</p>
+      </details>
     </section>
 
   </main>
 
-  <footer class="border-top py-3">
-    <div class="container small text-secondary">
-      © Entornos de Desarrollo · DAW1 — Práctica 4. Hecho con ❤️ para aprender mejor.
-    </div>
+  <footer class="wrap">
+    <p>© Entornos de Desarrollo · DAW1 — Práctica 6. Hecho con ❤️ para aprender mejor.</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Checklist → progreso
+    // Checklist con barra de progreso
     (function(){
-      const boxes = document.querySelectorAll('.form-check-input');
+      const list = document.getElementById('checklist');
+      if(!list) return;
       const bar = document.getElementById('bar');
-      const hint = document.getElementById('hint');
-      function update(){
-        const done = [...boxes].filter(b=>b.checked).length;
-        const pct = Math.round((done / boxes.length) * 100);
+      const hint = document.getElementById('progressHint');
+      const inputs = list.querySelectorAll('input[type="checkbox"]');
+      const update = ()=>{
+        const done = [...inputs].filter(i=>i.checked).length;
+        const pct = Math.round((done/inputs.length)*100);
         bar.style.width = pct + '%';
         hint.textContent = pct + '% completado';
-      }
-      boxes.forEach(b => b.addEventListener('change', update));
+      };
+      inputs.forEach(i=> i.addEventListener('change', update));
       update();
     })();
   </script>
