@@ -271,50 +271,100 @@
       </div>
 
     </section>
-    <section id="comparativa" class="card">
-      <h2>📊 Comparativa y evaluación</h2>
-      <p>Rellena la tabla con una puntuación del 1 (muy pobre) al 5 (excelente) y añade comentarios breves.</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Criterio</th>
-            <th>IntelliJ</th>
-            <th>NetBeans</th>
-            <th>VS Code</th>
-            <th>Fleet</th>
-            <th>Codespaces</th>
-            <th>Comentarios</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Instalación y setup JDK</td><td></td><td></td><td></td><td></td><td></td><td>¿Autodetecta/instala JDK?</td>
-          </tr>
-          <tr>
-            <td>Interfaz y UX</td><td></td><td></td><td></td><td></td><td></td><td>Navegación, buscador de acciones</td>
-          </tr>
-          <tr>
-            <td>Soporte Java (editor)</td><td></td><td></td><td></td><td></td><td></td><td>Autocomplete, refactor, hints</td>
-          </tr>
-          <tr>
-            <td>Depuración</td><td></td><td></td><td></td><td></td><td></td><td>Breakpoints, variables, evaluate</td>
-          </tr>
-          <tr>
-            <td>Rendimiento</td><td></td><td></td><td></td><td></td><td></td><td>Arranque, consumo, primera ejecución</td>
-          </tr>
-          <tr>
-            <td>Personalización</td><td></td><td></td><td></td><td></td><td></td><td>Temas, atajos, plugins</td>
-          </tr>
-          <tr>
-            <td>Docs y comunidad</td><td></td><td></td><td></td><td></td><td></td><td>Tutoriales, foros, ejemplos</td>
-          </tr>
-          <tr>
-            <td>Extras</td><td></td><td></td><td></td><td></td><td></td><td>IA, integración cloud, contenedores</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="hint">Cierra con 6–8 líneas justificando <strong>qué IDE elegirías</strong> para Java en este curso y por qué.</p>
-    </section>
+<section id="comparativa" class="card">
+  <h2>📊 Comparativa y evaluación</h2>
+  <p>
+    Califica cada criterio del <strong>1</strong> (muy pobre) al <strong>5</strong> (excelente). 
+    Usa la columna <em>Notas</em> para justificar con 1–2 frases <u>qué observaste</u> (ej.: “autodetecta JDK y ofrece instalarlo”).
+  </p>
+
+  <details style="margin-bottom:10px">
+    <summary><strong>Guía rápida de criterios (haz clic para ver sugerencias)</strong></summary>
+    <ul class="hint">
+      <li><strong>Instalación y setup JDK</strong>: ¿Se instala sin fricción? ¿Detecta o instala el JDK automáticamente?</li>
+      <li><strong>Interfaz y UX</strong>: Claridad, búsqueda de acciones, facilidad para encontrar “Run/Debug”.</li>
+      <li><strong>Soporte Java (editor)</strong>: Autocompletado, refactorizaciones, resaltado, inspecciones y ayudas.</li>
+      <li><strong>Depuración</strong>: Breakpoints, variables visibles, “Step Over/Into”, evaluación de expresiones.</li>
+      <li><strong>Rendimiento</strong>: Tiempo de arranque, fluidez al escribir, primera ejecución de <code>HelloWorld</code>.</li>
+      <li><strong>Personalización</strong>: Temas, atajos, marketplace de plugins/paquetes.</li>
+      <li><strong>Docs y comunidad</strong>: Calidad de documentación, foros/Issues, ejemplos oficiales.</li>
+      <li><strong>Extras</strong>: IA, integración cloud, contenedores, herramientas web integradas, etc.</li>
+    </ul>
+  </details>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Criterio</th>
+          <th>Eclipse</th>
+        <th>IntelliJ IDEA</th>
+        <th>NetBeans</th>
+        <th>VS Code</th>
+        <th>WebStorm</th>
+        <th>Atom</th>
+        <th>KDevelop</th>
+        <th>Notas (qué viste exactamente)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Instalación y setup JDK</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">¿Autodetecta/instala JDK? ¿tuviste que configurar PATH?</td>
+      </tr>
+      <tr>
+        <td>Interfaz y UX</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">Navegación, buscador de comandos, claridad de menús</td>
+      </tr>
+      <tr>
+        <td>Soporte Java (editor)</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">Autocompletado, refactor, inspecciones, hints</td>
+      </tr>
+      <tr>
+        <td>Depuración</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">Breakpoints, variables, evaluate, facilidad de uso</td>
+      </tr>
+      <tr>
+        <td>Rendimiento</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">Arranque, consumo, primera ejecución de HelloWorld</td>
+      </tr>
+      <tr>
+        <td>Personalización</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">Temas, keymaps, plugins/paquetes disponibles</td>
+      </tr>
+      <tr>
+        <td>Docs y comunidad</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">Guías oficiales, foros, issues, ejemplos</td>
+      </tr>
+      <tr>
+        <td>Extras</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="hint">IA, cloud, contenedores, integraciones destacables</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="hint" style="margin-top:10px">
+    Cierra con 6–8 líneas eligiendo <strong>un IDE principal</strong> para el curso y justificando con 3–4 evidencias de tu tabla.
+  </p>
+
+  <details>
+    <summary><strong>Escala sugerida (1–5)</strong></summary>
+    <ul class="hint">
+      <li><strong>1</strong>: muy pobre / tuve que pelearme mucho / faltan funciones clave</li>
+      <li><strong>2</strong>: flojo / funciona con muchos pasos adicionales</li>
+      <li><strong>3</strong>: correcto / cumple lo básico sin destacar</li>
+      <li><strong>4</strong>: notable / buena experiencia y herramientas útiles</li>
+      <li><strong>5</strong>: excelente / todo funcionó a la primera y con calidad</li>
+    </ul>
+  </details>
+</section>
    
 
     <section id="entrega" class="card">
